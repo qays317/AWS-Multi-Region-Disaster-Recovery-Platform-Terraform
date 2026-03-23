@@ -32,15 +32,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install git+https://github.com/QaysAlnajjad/dr-tool.git
 
-      # Optional: إذا تريد جلب image URIs من runtime
-      - name: Load image URIs
-        run: |
-          echo "PRIMARY_ECR_IMAGE_URI=$(cat scripts/runtime/primary-ecr-image-uri || echo '')" >> $GITHUB_ENV
-          echo "DR_ECR_IMAGE_URI=$(cat scripts/runtime/dr-ecr-image-uri || echo '')" >> $GITHUB_ENV
-
       - name: Run DR checker
         run: |
           dr-checker \
-            --config dr-checker-config.yaml \
-            --primary-image-uri "$PRIMARY_ECR_IMAGE_URI" \
-            --dr-image-uri "$DR_ECR_IMAGE_URI"
+            --config dr-checker-config.yaml 
