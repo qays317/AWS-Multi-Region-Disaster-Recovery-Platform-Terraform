@@ -9,6 +9,7 @@
 **Production-Grade • Highly Available • Fault-Tolerant • Terraform & AWS**
 
 This repository delivers a **real-world enterprise disaster recovery design** for running WordPress across **two AWS regions** using a fully automated, highly available, self-healing architecture.
+This project focuses not only on infrastructure provisioning, but on demonstrating real-world disaster recovery engineering, operational decision-making, and production trade-offs.
 
 All infrastructure is 100% managed using **Terraform**, following AWS **Well-Architected best practices**.
 
@@ -844,6 +845,7 @@ Primary ($187–$305) + DR ($145–$196)
 
 # **Known Limitations and Trade-offs**
 
+These limitations are intentional and reflect real-world engineering trade-offs rather than incomplete implementation.
 This project implements a realistic multi-region DR (Disaster Recovery) architecture using a Warm Standby strategy. While effective and cost-efficient, it includes several intentional trade-offs and limitations that are important to understand.
 
 ### 1. Manual RDS Failover (Replica Promotion)
