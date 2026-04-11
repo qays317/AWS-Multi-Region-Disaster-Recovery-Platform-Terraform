@@ -64,7 +64,7 @@ terraform -chdir="environments/primary/network_rds" destroy \
   -target=null_resource.tag_rds_master_secret \
   -auto-approve || true
 
-destroy ""
+destroy "operations/dr_orchestration"
 
 destroy_stack "dr/ecs"
 destroy_stack "primary/ecs"
