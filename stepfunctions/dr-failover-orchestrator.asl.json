@@ -1,0 +1,140 @@
+{
+  "Comment": "DR failover orchestrator for multi-region ECS + RDS",
+  "StartAt": "RecheckIncident",
+  "States": {
+    "RecheckIncident": {
+      "Type": "Task",
+      "Resource": "${recheck_incident_lambda_arn}",
+      "Next": "IncidentConfirmed?"
+    },
+    "IncidentConfirmed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.incident_confirmed",
+          "BooleanEquals": true,
+          "Next": "CheckReplicaReadiness"
+        }
+      ],
+      "Default": "StopFalseAlarm"
+    },
+    "StopFalseAlarm": {
+      "Type": "Succeed"
+    },
+    "CheckReplicaReadiness": {
+      "Type": "Task",
+      "Resource": "${check_replica_readiness_lambda_arn}",
+      "Next": "ReplicaReady?"
+    },
+    "ReplicaReady?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.replica_ready",
+          "BooleanEquals": true,
+          "Next": "PromoteReplica"
+        }
+      ],
+      "Default": "FailReplicaNotReady"
+    },
+    "FailReplicaNotReady": {
+      "Type": "Fail",
+      "Cause": "DR replica is not ready for promotion"
+    },
+    "PromoteReplica": {
+      "Type": "Task",
+      "Resource": "${promote_replica_lambda_arn}",
+      "Next": "WaitForDBPromotion"
+    },
+    "WaitForDBPromotion": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "CheckDBAvailable"
+    },
+    "CheckDBAvailable": {
+      "Type": "Task",
+      "Resource": "${check_db_available_lambda_arn}",
+      "Next": "DBAvailable?"
+    },
+    "DBAvailable?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_available",
+          "BooleanEquals": true,
+          "Next": "ValidateDBWritable"
+        }
+      ],
+      "Default": "WaitForDBPromotion"
+    },
+    "ValidateDBWritable": {
+      "Type": "Task",
+      "Resource": "${validate_db_writable_lambda_arn}",
+      "Next": "DBWritable?"
+    },
+    "DBWritable?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_writable",
+          "BooleanEquals": true,
+          "Next": "ScaleUpDRService"
+        }
+      ],
+      "Default": "FailDBNotWritable"
+    },
+    "FailDBNotWritable": {
+      "Type": "Fail",
+      "Cause": "Promoted database is not writable"
+    },
+    "ScaleUpDRService": {
+      "Type": "Task",
+      "Resource": "${scaleup_dr_service_lambda_arn}",
+      "Next": "WaitForECSStartup"
+    },
+    "WaitForECSStartup": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "CheckECSHealthy"
+    },
+    "CheckECSHealthy": {
+      "Type": "Task",
+      "Resource": "${check_ecs_healthy_lambda_arn}",
+      "Next": "ECSHealthy?"
+    },
+    "ECSHealthy?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.ecs_healthy",
+          "BooleanEquals": true,
+          "Next": "ValidateApplication"
+        }
+      ],
+      "Default": "WaitForECSStartup"
+    },
+    "ValidateApplication": {
+      "Type": "Task",
+      "Resource": "${validate_application_lambda_arn}",
+      "Next": "ApplicationHealthy?"
+    },
+    "ApplicationHealthy?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.app_healthy",
+          "BooleanEquals": true,
+          "Next": "FailoverCompleted"
+        }
+      ],
+      "Default": "FailApplicationValidation"
+    },
+    "FailApplicationValidation": {
+      "Type": "Fail",
+      "Cause": "Application validation failed after failover"
+    },
+    "FailoverCompleted": {
+      "Type": "Succeed"
+    }
+  }
+}

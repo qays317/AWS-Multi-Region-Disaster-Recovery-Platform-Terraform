@@ -26,6 +26,7 @@ DR_MEDIA_S3_BUCKET="wordpress-media-dr-2004"
 #  Media S3 buckets
 ############################################
 RDS_IDENTIFIER="wordpress-rds"
+MAX_REPLICA_LAG=30
 
 ############################################
 #  Domain and hosted zone

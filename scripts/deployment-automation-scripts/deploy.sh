@@ -84,4 +84,12 @@ STACK_VARS["dr/s3"]+=" \
 deploy_stack "primary/s3"
 deploy_stack "dr/s3"
 
+
+# DR Check Orchestration 
+
+ECS_CLUSTER_NAME=$(terraform -chdir="environments/primary/ecs" output -raw ecs_cluster_name)
+ECS_SERVICE_NAME=$(terraform -chdir="environments/primary/ecs" output -raw ecs_service_name)
+
+deploy_stack "operations/dr_orchestration"
+
 echo "🎉 Deployment complete!"
