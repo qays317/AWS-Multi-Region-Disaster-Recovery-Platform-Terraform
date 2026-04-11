@@ -30,6 +30,7 @@ variable "dr_region" {
 variable "primary_alarm_name" {
   description = "CloudWatch alarm name used to recheck incident status"
   type        = string
+  default = "name1"
 }
 
 variable "dr_replica_identifier" {
