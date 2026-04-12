@@ -34,7 +34,7 @@ STACK_VARS["primary/s3"]="\
 
 # PRIMARY ALB
 STACK_VARS["primary/alb"]="\
-  -var-file=../shared/alb.tfvars \
+  -var-file=../../shared_variables/alb.tfvars \
   -var primary_region=$PRIMARY_REGION \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
   -var state_bucket_region=$TF_STATE_BUCKET_REGION \
@@ -61,7 +61,7 @@ STACK_VARS["dr/s3"]="\
 
 # DR ALB
 STACK_VARS["dr/alb"]="\
-  -var-file=../shared/alb.tfvars \
+  -var-file=../../shared_variables/alb.tfvars \
   -var dr_region=$DR_REGION \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
   -var state_bucket_region=$TF_STATE_BUCKET_REGION \
@@ -83,7 +83,7 @@ STACK_VARS["global/cdn_dns"]="\
 # PRIMARY ECS
 STACK_VARS["primary/ecs"]="\
   -var-file=ecs.tfvars \
-  -var-file=../shared/ecs.tfvars \
+  -var-file=../../shared_variablesecs.tfvars \
   -var primary_domain=$PRIMARY_DOMAIN \
   -var primary_media_s3_bucket=$PRIMARY_MEDIA_S3_BUCKET \
   -var primary_region=$PRIMARY_REGION \
@@ -93,7 +93,7 @@ STACK_VARS["primary/ecs"]="\
 # DR ECS
 STACK_VARS["dr/ecs"]="\
   -var-file=ecs.tfvars \
-  -var-file=../shared/ecs.tfvars \
+  -var-file=../../shared_variables/ecs.tfvars \
   -var primary_domain=$PRIMARY_DOMAIN \
   -var dr_media_s3_bucket=$DR_MEDIA_S3_BUCKET \
   -var dr_region=$DR_REGION \
