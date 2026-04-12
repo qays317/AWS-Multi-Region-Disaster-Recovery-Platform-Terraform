@@ -76,7 +76,7 @@ locals {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          "awslogs-group" = "/ecs/${v.family}"
+          "awslogs-group" = "/ecs/${var.ecs_task_definition.family}"
           "awslogs-region" = data.aws_region.current.name
           "awslogs-stream-prefix" = "ecs"
         }
