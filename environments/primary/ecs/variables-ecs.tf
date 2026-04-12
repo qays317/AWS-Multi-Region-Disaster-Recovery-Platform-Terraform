@@ -39,9 +39,12 @@ variable "ecs_task_definition_config" {
   })
 }
 
+variable "ecs_service_name_config" {
+  type = string
+}
+
 variable "ecs_service_config" {
   type = object({
-    name = string
     desired_count = number
     network_configuration = object({
       security_group_name = string
