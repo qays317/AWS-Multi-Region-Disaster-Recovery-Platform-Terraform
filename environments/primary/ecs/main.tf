@@ -69,11 +69,11 @@ module "ecs" {
     # ECS configuration
     security_groups = module.sg_ecs.ecs_security_groups
     vpc_endpoints_security_group_id = module.sg_ecs.vpc_endpoints_security_group_id
-    ecs_cluster_name = var.ecs_cluster_name_config
+    ecs_cluster_name = var.ecs_cluster_name
     ecs_execution_role_arn = data.terraform_remote_state.iam.outputs.ecs_execution_role_arn
     ecs_task_role_arn = data.terraform_remote_state.iam.outputs.ecs_task_role_arn
     ecs_task_definition = var.ecs_task_definition_config
-    ecs_service_name = var.ecs_service_name_config
+    ecs_service_name = var.ecs_service_name
     ecs_service = var.ecs_service_config
     # VPC Endpoints
     vpc_endpoints = var.vpc_endpoints_config
