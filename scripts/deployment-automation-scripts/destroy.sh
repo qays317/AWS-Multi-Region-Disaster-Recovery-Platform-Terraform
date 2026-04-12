@@ -67,7 +67,6 @@ destroy_stack() {
 
 echo "🧹 Removing DB bootstrap Lambda to shorten teardown time..."
 init_stack "primary/network_rds"
-
 terraform -chdir="environments/primary/network_rds" destroy \
   ${STACK_VARS["primary/network_rds"]} \
   -target=aws_lambda_function.lambda \
