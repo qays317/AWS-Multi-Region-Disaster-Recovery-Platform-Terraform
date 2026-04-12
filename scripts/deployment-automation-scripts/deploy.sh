@@ -64,8 +64,8 @@ DR_ECR_IMAGE_URI=$(cat scripts/runtime/dr-ecr-image-uri)
 STACK_VARS["primary/ecs"]+=" -var ecr_image_uri=$PRIMARY_ECR_IMAGE_URI"
 STACK_VARS["dr/ecs"]+=" -var ecr_image_uri=$DR_ECR_IMAGE_URI"
 # Read ECS cluster, service names
-STACK_VARS["primary/ecs"]+=" -var ecr_cluster_name=$ECS_CLUSTER_NAME"
-STACK_VARS["primary/ecs"]+=" -var ecr_service_name=$ECS_SERVICE_NAME"
+STACK_VARS["primary/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
+STACK_VARS["primary/ecs"]+=" -var ecs_service_name=$ECS_SERVICE_NAME"
 STACK_VARS["dr/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
 STACK_VARS["dr/ecs"]+=" -var ecs_service_name=$ECS_SERVICE_NAME"
 
