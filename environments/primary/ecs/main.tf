@@ -74,7 +74,8 @@ module "ecs" {
     ecs_task_role_arn = data.terraform_remote_state.iam.outputs.ecs_task_role_arn
     ecs_task_definition = var.ecs_task_definition_config
     ecs_service_name = var.ecs_service_name
-    ecs_service = var.ecs_service_config
+    ecs_service_sg_name = var.ecs_service_sg_name
+    ecs_task_desired_count = var.ecs_task_desired_count
     # VPC Endpoints
     vpc_endpoints = var.vpc_endpoints_config
 }
