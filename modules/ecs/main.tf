@@ -115,7 +115,7 @@ resource "aws_ecs_service" "wordpress" {
 
     network_configuration {
       subnets = var.private_subnets_ids
-      security_groups = [var.security_groups[var.ecs_service.network_configuration.security_group_name]]
+      security_groups = [var.security_groups[var.ecs_service_sg_name]]
       assign_public_ip = false
     }
 
