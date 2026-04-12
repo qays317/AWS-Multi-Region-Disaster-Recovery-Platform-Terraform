@@ -75,14 +75,19 @@ terraform -chdir="environments/primary/network_rds" destroy \
   -target=null_resource.tag_rds_master_secret \
   -auto-approve || true
 
-# Need init before reading outputs from a stack that uses remote backend
-init_stack "primary/ecs"
 
 STACK_VARS["operations/dr_orchestration"]+=" \
   -var ecs_cluster_name=$ECS_CLUSTER_NAME \
   -var ecs_service_name=$ECS_SERVICE_NAME"
 
 destroy_stack "operations/dr_orchestration"
+
+
+# Read ECS cluster, service names
+STACK_VARS["primary/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
+STACK_VARS["primary/ecs"]+=" -var ecs_service_name=$ECS_SERVICE_NAME"
+STACK_VARS["dr/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
+STACK_VARS["dr/ecs"]+=" -var ecs_service_name=$ECS_SERVICE_NAME"
 
 destroy_stack "dr/ecs"
 destroy_stack "primary/ecs"
