@@ -12,6 +12,7 @@ variable "ecs_cluster_name" {
 
 variable "ecs_task_definition" {
   type = object({
+    name = string
     family = string
     cpu = string
     memory = string
@@ -51,6 +52,7 @@ variable "ecs_task_role_arn" {
 
 variable "ecs_service" {
   type = object({
+    name = string
     desired_count = number
     network_configuration = object({
       security_group_name = string
