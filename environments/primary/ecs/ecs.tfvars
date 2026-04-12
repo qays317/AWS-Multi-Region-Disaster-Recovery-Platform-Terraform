@@ -33,22 +33,16 @@ ecs_security_group_config = {
 ecs_cluster_name_config = "wordpress-cluster"
 
 ecs_task_definition_config = {
-    wordpress-task-definition = {
-        family = "wordpress-task"
-        cpu = "1024"
-        memory = "2048"
-        rds_name = "mysql"
-    }
+    family = "wordpress-task"
+    cpu = "1024"
+    memory = "2048"
+    rds_name = "mysql"
 }
 
 ecs_service_config = {
-    wordpress-service = {
-        cluster = "wordpress-cluster"
-        task_definition = "wordpress-task-definition"
-        desired_count = 2
-        network_configuration = {
-          security_group_name = "wordpress-service-SG"
-        }
+    desired_count = 2
+    network_configuration = {
+        security_group_name = "wordpress-service-SG"
     }
 }
 
