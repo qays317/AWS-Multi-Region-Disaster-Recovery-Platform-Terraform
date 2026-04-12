@@ -68,9 +68,7 @@ STACK_VARS["primary/ecs"]+=" -var ecr_cluster_name=$ECS_CLUSTER_NAME"
 STACK_VARS["primary/ecs"]+=" -var ecr_service_name=$ECS_SERVICE_NAME"
 STACK_VARS["dr/ecs"]+=" -var ecr_cluster_name=$ECS_CLUSTER_NAME"
 STACK_VARS["dr/ecs"]+=" -var ecr_service_name=$ECS_SERVICE_NAME"
-# Add shared tfvars file
-STACK_VARS["primary/ecs"]+=" -var-file=shared/ecs.tfvars"
-STACK_VARS["dr/ecs"]+=" -var-file=shared/ecs.tfvars"
+
 
 deploy_stack "primary/ecs"
 deploy_stack "dr/ecs"
