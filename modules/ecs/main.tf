@@ -92,7 +92,7 @@ resource "aws_ecs_task_definition" "wordpress" {
     memory = var.ecs_task_definition.memory
     execution_role_arn = var.ecs_execution_role_arn
     task_role_arn = var.ecs_task_role_arn
-    container_definitions = local.container_definition
+    container_definitions = local.container_definition.name
     tags = { 
       Name = var.ecs_task_definition.name
       project = "wordpress"
