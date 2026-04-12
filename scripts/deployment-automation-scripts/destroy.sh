@@ -78,9 +78,6 @@ terraform -chdir="environments/primary/network_rds" destroy \
 # Need init before reading outputs from a stack that uses remote backend
 init_stack "primary/ecs"
 
-ECS_CLUSTER_NAME=$(terraform -chdir="environments/primary/ecs" output -raw ecs_cluster_name)
-ECS_SERVICE_NAME="wordpress-service"
-
 STACK_VARS["operations/dr_orchestration"]+=" \
   -var ecs_cluster_name=$ECS_CLUSTER_NAME \
   -var ecs_service_name=$ECS_SERVICE_NAME"
