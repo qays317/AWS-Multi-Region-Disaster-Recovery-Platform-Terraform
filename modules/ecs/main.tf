@@ -145,9 +145,18 @@ data "aws_route_tables" "private" {
   }
 }
 
+locals {
+  effective_vpc_endpoints = var.aws_region == var.primary_region
+    ? {
+        for k, v in var.vpc_endpoints : k => v
+        if k != "secretsmanager"
+      }
+    : var.vpc_endpoints
+}
+
 # VPC Endpoints
 resource "aws_vpc_endpoint" "main" {
-  for_each = var.vpc_endpoints
+  for_each = local.effective_vpc_endpoints
     vpc_id = var.vpc_id
     service_name = "com.amazonaws.${data.aws_region.current.name}.${each.key}"
     vpc_endpoint_type = each.value
