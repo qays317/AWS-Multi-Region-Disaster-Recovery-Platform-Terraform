@@ -106,7 +106,14 @@ STACK_VARS["operations/dr_orchestration"]="\
   -var primary_region=$PRIMARY_REGION \
   -var dr_region=$DR_REGION \
   -var dr_replica_identifier=$RDS_IDENTIFIER \
-  -var max_replication_lag_seconds=$MAX_REPLICA_LAG
+  -var max_replication_lag_seconds=$MAX_REPLICA_LAG \
+  -var state_bucket_name=$TF_STATE_BUCKET_NAME \
+  -var state_bucket_region=$TF_STATE_BUCKET_REGION"
 
+
+# Failover alarms
+STACK_VARS["primary/failover_alarms"]="\
+  -var primary_region=$PRIMARY_REGION \
+  -var-file=../../shared_variables/ecs.tfvars \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
   -var state_bucket_region=$TF_STATE_BUCKET_REGION"
