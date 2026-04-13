@@ -82,12 +82,7 @@ variable "vpc_endpoints_security_group_id" {
   type = string
 }
 
-variable "target_group_arn_suffix" {      
-  type = string
-}
-variable "load_balancer_arn_suffix" {
-  type = string
-}
+
 
 variable "cloudfront_distribution_id" {
   type = string
