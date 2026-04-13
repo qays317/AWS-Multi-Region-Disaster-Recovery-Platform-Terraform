@@ -16,12 +16,6 @@ variable "aws_region" {
   default = "eu-central-1"
 }
 
-variable "primary_region" {
-  description = "Primary AWS region"
-  type        = string
-
-}
-
 variable "dr_region" {
   description = "Disaster recovery AWS region"
   type        = string
