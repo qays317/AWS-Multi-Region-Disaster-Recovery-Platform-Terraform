@@ -93,6 +93,12 @@ variable "cloudfront_distribution_id" {
   type = string
 }
 
+variable "create_secretsmanager_endpoint" {
+  description = "Whether to create the Secrets Manager VPC endpoint in this stack"
+  type        = bool
+  default     = true
+}
+
 variable "cloudfront_distribution_domain" {
   type = string
 }
