@@ -1,3 +1,13 @@
+data "terraform_remote_state" "alb" {
+  backend = "s3"
+  config = {
+    bucket = var.state_bucket_name
+    key = "environments/primary/alb/terraform.tfstate"
+    region = var.state_bucket_region
+  }
+}
+
+
 /*
 ===================================================================================================================================================================
 ===================================================================================================================================================================
@@ -20,8 +30,8 @@ resource "aws_cloudwatch_metric_alarm" "ecs_health_alarm" {
   treat_missing_data = "breaching"
   alarm_actions = []
   dimensions = {
-    TargetGroup = var.target_group_arn_suffix
-    LoadBalancer = var.load_balancer_arn_suffix
+    TargetGroup = data.terraform_remote_state.alb.outputs.target_group_arn_suffix 
+    LoadBalancer = data.terraform_remote_state.alb.outputs.alb_arn_suffix
   }
   tags = { Name = "wordpress-health-alarm" }
 }
