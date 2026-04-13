@@ -77,6 +77,7 @@ module "ecs" {
     ecs_service_sg_name = var.ecs_service_sg_name
     ecs_task_desired_count = var.ecs_task_desired_count
     # VPC Endpoints
+    create_secretsmanager_endpoint = false
     vpc_endpoints = var.vpc_endpoints_config
 }
 
