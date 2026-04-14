@@ -24,7 +24,7 @@ data "aws_db_instance" "primary" {
 }
 
 resource "aws_db_instance" "read_replica" {
-  identifier = "${var.rds_identifier}-replica"
+  identifier = "${var.rds_replica_identifier}"
   
   replicate_source_db = data.aws_db_instance.primary.db_instance_arn
   
@@ -79,7 +79,7 @@ data "aws_secretsmanager_secret_version" "primary_wordpress" {
 
 # Create DR secret with same WordPress credentials
 resource "aws_secretsmanager_secret" "rr" {
-  name = "${var.rds_identifier}-dr-replica-secret"
+  name = "${var.rds_replica_identifier}-secret"
   description = "WordPress database credentials for DR"
   recovery_window_in_days = 0
 }
