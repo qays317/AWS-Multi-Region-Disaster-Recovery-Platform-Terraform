@@ -10,7 +10,8 @@ def lambda_handler(event, context):
 
     try:
         response = cloudwatch.describe_alarms(
-            AlarmNames=[alarm_name]
+            AlarmNames=[alarm_name],
+            AlarmTypes=["CompositeAlarm", "MetricAlarm"]
         )
 
         composite_alarms = response.get("CompositeAlarms", [])
