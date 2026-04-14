@@ -46,7 +46,7 @@ STACK_VARS["primary/alb"]="\
 
 # DR Read Replica RDS
 STACK_VARS["dr/read_replica_rds"]="\
-  -var rds_identifier=$RDS_IDENTIFIER \
+  -var rds_replica_identifier=$RDS_IDENTIFIER \
   -var primary_region=$PRIMARY_REGION \
   -var dr_region=$DR_REGION \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
