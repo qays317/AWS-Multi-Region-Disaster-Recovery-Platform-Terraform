@@ -1,3 +1,3 @@
-variable "rds_replica_identifier" {
+variable "rds_identifier" {
   type = string
 }
