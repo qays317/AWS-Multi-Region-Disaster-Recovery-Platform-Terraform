@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_health_alarm" {
 resource "aws_cloudwatch_metric_alarm" "ecs_running_tasks_alarm" {
   alarm_name = "wordpress-ecs-running-low"
   alarm_description = "Alarm when ECS running task count is lower than expected"
-  namespace = "AWS/ECS"
+  namespace = "ECS/ContainerInsights"
   metric_name = "RunningTaskCount"
   statistic = "Average"
   threshold = 2
