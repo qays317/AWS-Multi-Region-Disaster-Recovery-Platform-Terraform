@@ -5,7 +5,7 @@ locals {
       
       "primary-db-setup" ={ 
         timeout = 900
-        role_arn = 
+        role_arn = data.terraform_remote_state.vpc.outputs.lambda_db_setup_role_arn
         vpc_config = {
             subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets_ids
             security_group_ids = [module.sg.db_setup_lambda_security_group_id]
