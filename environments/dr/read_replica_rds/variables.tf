@@ -6,7 +6,7 @@ variable "rds_replica_identifier" {
   type = string
 }
 
-variable "security_group" {
+variable "dr_rds_security_group_config" {
     type = map(object({
         ingress = optional (map(object({
             from_port = number
