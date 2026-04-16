@@ -1,5 +1,5 @@
 dr_rds_security_group_config = {
-    RDS-SG = {
+    DR-RDS-SG = {
         ingress= {
             mysql_access = {
                 ip_protocol = "tcp"
