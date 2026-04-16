@@ -66,9 +66,9 @@ destroy_stack() {
 # -----------------------------
 
 echo "🧹 Removing DB bootstrap Lambda to shorten teardown time..."
-init_stack "primary/network_rds"
-terraform -chdir="environments/primary/network_rds" destroy \
-  ${STACK_VARS["primary/network_rds"]} \
+init_stack "primary/rds"
+terraform -chdir="environments/primary/rds" destroy \
+  ${STACK_VARS["primary/rds"]} \
   -target=aws_lambda_function.lambda \
   -target=aws_cloudwatch_log_group.lambda_logs \
   -target=null_resource.invoke_lambda_after_creation \
@@ -143,12 +143,13 @@ fi
 destroy_stack "global/cdn_dns"
 destroy_stack "dr/alb"
 init_stack "primary/s3"
-#destroy_stack "dr/s3"
+destroy_stack "dr/s3"
 destroy_stack "dr/read_replica_rds"
 destroy_stack "primary/alb"
-#destroy_stack "primary/s3"
+destroy_stack "primary/s3"
 destroy_stack "dr/network"
-destroy_stack "primary/network_rds"
+destroy_stack "primary/rds"
+destroy_stack "primary/network"
 destroy_stack "global/oac"
 destroy_stack "global/iam"
 
