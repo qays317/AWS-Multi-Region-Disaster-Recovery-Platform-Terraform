@@ -1,6 +1,5 @@
 rds_security_group_config = {
     lambda_validate_db_writable_security_group_config = {
-        vpc_name = "VPC-1"
         egress = {
             mysql_access = {
                 ip_protocol = "tcp"
