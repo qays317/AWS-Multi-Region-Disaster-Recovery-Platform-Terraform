@@ -43,7 +43,7 @@ resource "aws_db_instance" "read_replica" {
   
   # Network configuration
   db_subnet_group_name = aws_db_subnet_group.rr.name
-  vpc_security_group_ids = [aws_security_group.rr.id]
+  vpc_security_group_ids = module.sg.dr_rds_sg_id
   
   # Read replicas inherit most settings from source
   skip_final_snapshot = true
@@ -61,23 +61,6 @@ resource "aws_db_subnet_group" "rr" {
   
   tags = {
     Name = "WordPress DR DB subnet group"
-  }
-}
-
-# Security group for RDS
-resource "aws_security_group" "rr" {
-  name_prefix = "wordpress-rds-dr-"
-  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
-  
-  ingress {
-    from_port = 3306
-    to_port = 3306
-    protocol = "tcp"
-    cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr]
-  }
-  
-  tags = {
-    Name = "WordPress-RDS-DR-SG"
   }
 }
 
