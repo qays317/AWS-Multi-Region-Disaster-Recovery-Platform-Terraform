@@ -41,7 +41,7 @@ locals {
         role = data.terraform_remote_state.iam.lambda_failover_role_arn
         layer = true
         vpc_config = {
-          subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets_ids
+          subnet_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
           security_group_ids = [module.sg.db_setup_lambda_security_group_id]
         }
         environment = {
