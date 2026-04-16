@@ -2,11 +2,20 @@
 // 2. ECS
 //==================================================================================
 
-data "terraform_remote_state" "network_rds" {
+data "terraform_remote_state" "network" {
   backend = "s3"
   config = {
     bucket = var.state_bucket_name
-    key = "environments/primary/network_rds/terraform.tfstate"
+    key = "environments/primary/network/terraform.tfstate"
+    region = var.state_bucket_region
+  }
+}
+
+data "terraform_remote_state" "rds" {
+  backend = "s3"
+  config = {
+    bucket = var.state_bucket_name
+    key = "environments/primary/rds/terraform.tfstate"
     region = var.state_bucket_region
   }
 }
@@ -22,7 +31,7 @@ data "terraform_remote_state" "alb" {
 
 module "sg_ecs" {
   source = "../../../modules/sg"
-  vpc_id = data.terraform_remote_state.network_rds.outputs.vpc_id
+  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
   security_group = var.ecs_security_group_config
   stage_tag = "ECS"
   external_security_groups = {
@@ -51,10 +60,10 @@ data "terraform_remote_state" "cdn_dns" {
 module "ecs" {
     source = "../../../modules/ecs"
     # infrastructure data
-    vpc_id = data.terraform_remote_state.network_rds.outputs.vpc_id    
-    private_subnets_ids = data.terraform_remote_state.network_rds.outputs.private_subnets_ids  
+    vpc_id = data.terraform_remote_state.network.outputs.vpc_id    
+    private_subnets_ids = data.terraform_remote_state.network.outputs.private_subnets_ids  
     # RDS data     
-    wordpress_secret_arn = data.terraform_remote_state.network_rds.outputs.wordpress_secret_arn
+    wordpress_secret_arn = data.terraform_remote_state.rds.outputs.wordpress_secret_arn
     # ALB data
     target_group_arn = data.terraform_remote_state.alb.outputs.target_group_arn
     #target_group_arn_suffix = data.terraform_remote_state.alb.outputs.target_group_arn_suffix 
