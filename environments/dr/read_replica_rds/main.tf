@@ -95,7 +95,7 @@ resource "aws_vpc_endpoint" "secretsmanager" {
   service_name = "com.amazonaws.${data.aws_region.current.name}.secretsmanager"
   vpc_endpoint_type = "Interface"
   subnet_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
-  security_group_ids = [var.security_groups[var.secretsmanager_endpoint_sg_name]]
+  security_group_ids = [module.sg.dr_secret_manager_endpoint_sg_id]
   private_dns_enabled = true
   
   policy = jsonencode({
@@ -106,12 +106,12 @@ resource "aws_vpc_endpoint" "secretsmanager" {
         Principal = "*"
         Action = "secretsmanager:*"
         Resource = [
-          aws_secretsmanager_secret.wordpress.arn,
-          aws_db_instance.rds.master_user_secret[0].secret_arn
+          aws_secretsmanager_secret.rr.arn,
+          aws_db_instance.read_replica.master_user_secret[0].secret_arn
         ]
       }
     ]
   })
 
-  tags = { Name = "secretsmanager-endpoint" }
+  tags = { Name = "drsecretsmanager-endpoint" }
 }
