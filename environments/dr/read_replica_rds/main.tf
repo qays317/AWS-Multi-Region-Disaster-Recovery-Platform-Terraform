@@ -88,3 +88,30 @@ resource "aws_secretsmanager_secret_version" "rr" {
     port = aws_db_instance.read_replica.port
   })
 }
+
+# VPC Endpoint for Secret
+resource "aws_vpc_endpoint" "secretsmanager" {
+  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
+  service_name = "com.amazonaws.${data.aws_region.current.name}.secretsmanager"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
+  security_group_ids = [var.security_groups[var.secretsmanager_endpoint_sg_name]]
+  private_dns_enabled = true
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = "*"
+        Action = "secretsmanager:*"
+        Resource = [
+          aws_secretsmanager_secret.wordpress.arn,
+          aws_db_instance.rds.master_user_secret[0].secret_arn
+        ]
+      }
+    ]
+  })
+
+  tags = { Name = "secretsmanager-endpoint" }
+}
