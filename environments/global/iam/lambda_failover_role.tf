@@ -14,38 +14,38 @@ module "lambda_failover" {
   # Logs
     {
       Effect = "Allow"
-      Actions = [
+      Action = [
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ]
-      Resources = ["arn:aws:logs:*:*:*"]    
+      Resource = ["arn:aws:logs:*:*:*"]    
     },
 
     # CloudWatch
     {
       Effect = "Allow"
-      Actions = [
+      Action = [
         "cloudwatch:DescribeAlarms",
         "cloudwatch:GetMetricStatistics"
       ]
-      Resources = ["*"]
+      Resource = ["*"]
     },
 
     # RDS
     {
       Effect = "Allow"
-      Actions = [
+      Action = [
         "rds:DescribeDBInstances",
         "rds:PromoteReadReplica"
       ]
-      Resources = ["*"]
+      Resource = ["*"]
     },
 
     # ECS
     {
       Effect = "Allow"
-      Actions = [
+      Action = [
         "ecs:DescribeServices",
         "ecs:UpdateService"
       ]
@@ -56,11 +56,11 @@ module "lambda_failover" {
     {
       effect = "Allow"
 
-      Actions = [
+      Action = [
         "secretsmanager:GetSecretValue",
         "secretsmanager:DescribeSecret"
       ]
-      Resources = [
+      Resource = [
         "arn:aws:secretsmanager:${var.dr_region}:${data.aws_caller_identity.current.account_id}:secret:wordpress-rds-replica-secret-*"
       ]
     }
