@@ -32,4 +32,10 @@ output "dr_rds_sg_id" {
                   if lookup( v.tags, "Name", "") == "DR-RDS-SG"][0], null ) 
 }
 
+output "dr_secret_manager_endpoint_sg_id" {
+    value = try([ for k, v in aws_security_group.main : v.id
+                  if lookup( v.tags, "Name", "") == " DR-SecretsManager-Endpoint-SG"][0], null ) 
+}
+
+
 
