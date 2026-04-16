@@ -16,11 +16,18 @@ STACK_VARS["global/oac"]="\
 
 # PRIMARY NETWORK + RDS
 STACK_VARS["primary/network_rds"]="\
+  -var primary_region=$PRIMARY_REGION \
+  -var state_bucket_name=$TF_STATE_BUCKET_NAME \
+  -var state_bucket_region=$TF_STATE_BUCKET_REGION \
+  -var-file=network.tfvars" 
+
+# PRIMARY RDS
+STACK_VARS["primary/rds"]="\
   -var rds_identifier=$RDS_IDENTIFIER \
   -var primary_region=$PRIMARY_REGION \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
   -var state_bucket_region=$TF_STATE_BUCKET_REGION \
-  -var-file=network_rds.tfvars" 
+  -var-file=rds.tfvars" 
 
 # DR NETWORK
 STACK_VARS["dr/network"]="\
