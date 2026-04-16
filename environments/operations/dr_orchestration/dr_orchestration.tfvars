@@ -15,3 +15,7 @@
             }
         }
     }
+
+
+
+lambda_validate_db_writable_security_group_config
