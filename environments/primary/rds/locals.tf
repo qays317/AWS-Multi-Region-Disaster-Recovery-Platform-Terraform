@@ -10,7 +10,7 @@ locals {
             subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets_ids
             security_group_ids = [module.sg.db_setup_lambda_security_group_id]
         }
-        layer = false
+        layer = true
         environment = {
             MASTER_SECRET_ARN = module.rds.master_secret_arn
             WORDPRESS_SECRET_NAME = "${var.rds_identifier}-secret"
