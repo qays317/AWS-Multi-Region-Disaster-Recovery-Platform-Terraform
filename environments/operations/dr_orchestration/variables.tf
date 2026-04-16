@@ -1,3 +1,25 @@
+variable "_config" {
+    type = map(object({
+        vpc_name = string
+        ingress = optional(map(object({
+            ip_protocol = string
+            from_port = number
+            to_port = number
+            cidr_block = optional(string)
+            vpc_cidr = optional(bool)
+            source_security_group_name = optional(string)
+        })))
+        egress = optional(map (object({
+            ip_protocol = string
+            from_port = number
+            to_port = number
+            cidr_block = optional(string)
+            vpc_cidr = optional(bool)
+            source_security_group_name = optional(string)
+        })) )
+    }))
+}
+
 variable "project_name" {
   description = "Project name prefix"
   type        = string
