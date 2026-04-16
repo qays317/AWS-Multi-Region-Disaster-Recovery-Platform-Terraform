@@ -7,7 +7,7 @@ locals {
         timeout = 900
         vpc_config = {
             subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets_ids
-            security_group_ids = [module.sg.outputs.db_setup_lambda_security_group_id]
+            security_group_ids = [module.sg.db_setup_lambda_security_group_id]
         }
         environment = {
             MASTER_SECRET_ARN = module.rds.master_secret_arn
