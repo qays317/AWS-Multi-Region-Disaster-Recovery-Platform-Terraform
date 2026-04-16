@@ -1,4 +1,4 @@
-rds_security_group_config = {
+dr_rds_security_group_config = {
     RDS-SG = {
         ingress= {
             mysql_access = {
