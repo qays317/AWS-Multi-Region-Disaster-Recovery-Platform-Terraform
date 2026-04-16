@@ -11,6 +11,16 @@ data "terraform_remote_state" "network" {
     }
 }
 
+data "terraform_remote_state" "iam" {
+    backend = "s3"
+    config = {
+      bucket = var.state_bucket_name
+      key = "environments/global/iam/terraform.tfstate"
+      region = var.state_bucket_region
+    }
+}
+
+
 # Creating Lambda functions
 module "lambda" {
   source = "../../../modules/lambda"
