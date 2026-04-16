@@ -54,8 +54,7 @@ module "lambda_failover" {
     
     # SecretManager 
     {
-      effect = "Allow"
-
+      Effect = "Allow"
       Action = [
         "secretsmanager:GetSecretValue",
         "secretsmanager:DescribeSecret"
