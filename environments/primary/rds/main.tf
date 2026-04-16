@@ -50,3 +50,16 @@ module "lambda" {
   lambda_source_base = local.lambda_source_base
   function = local.lambda
 }
+
+
+resource "aws_lambda_invocation" "db_bootstrap" {
+  function_name = local.lambda.each.key
+
+  input = jsonencode({
+    trigger = "terraform"
+  })
+
+  depends_on = [
+    module.lambda
+  ]
+}
