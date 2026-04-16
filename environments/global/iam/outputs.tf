@@ -13,3 +13,7 @@ output "ecs_task_role_arn" {
 output "s3_replication_role_arn" {
     value = module.s3_replication.role_arn
 }
+
+output "lambda_failover_role_arn" {
+    value = module.lambda_failover.role_arn 
+}

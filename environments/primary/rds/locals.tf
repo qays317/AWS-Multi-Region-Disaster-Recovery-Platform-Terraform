@@ -22,3 +22,7 @@ locals {
       }
   }
 }
+
+locals {
+  lambda_source_base = "${path.module}/../../../lambdas"
+}

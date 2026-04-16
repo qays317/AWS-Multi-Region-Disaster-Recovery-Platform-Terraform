@@ -16,12 +16,6 @@ variable "aws_region" {
   default = "eu-central-1"
 }
 
-variable "primary_alarm_name" {
-  description = "CloudWatch alarm name used to recheck incident status"
-  type        = string
-  default = "wordpress-failover-composite-alarm"
-}
-
 variable "rds_replica_identifier" {
   description = "RDS read replica identifier in DR region"
   type        = string

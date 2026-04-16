@@ -38,14 +38,8 @@ module "rds" {
   rds = var.rds_config
 }
 
-locals {
-  lambda_source_base = "${path.module}/../../../lambdas"
-}
-
 module "lambda" {
   source = "../../../modules/lambda"
-  lambda_role_arn = data.terraform_remote_state.iam.outputs.lambda_db_setup_role_arn
-  lambda_security_group_name = var.lambda_security_group_name
   name_prefix = "wordpress-infrastructure"
   lambda_source_base = local.lambda_source_base
   function = local.lambda
