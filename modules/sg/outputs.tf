@@ -34,8 +34,14 @@ output "dr_rds_sg_id" {
 
 output "dr_secret_manager_endpoint_sg_id" {
     value = try([ for k, v in aws_security_group.main : v.id
-                  if lookup( v.tags, "Name", "") == " DR-SecretsManager-Endpoint-SG"][0], null ) 
+                  if lookup( v.tags, "Name", "") == "DR-SecretsManager-Endpoint-SG"][0], null ) 
 }
+
+output "lambda-validate-db-writable_sg_id" {
+    value = try([ for k, v in aws_security_group.main : v.id
+                  if lookup( v.tags, "Name", "") == "Lambda-validate-db-writable-SG"][0], null ) 
+}
+
 
 
 
