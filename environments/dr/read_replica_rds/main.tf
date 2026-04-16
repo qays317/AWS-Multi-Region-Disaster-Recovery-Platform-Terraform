@@ -12,7 +12,7 @@ data "terraform_remote_state" "primary_rds" {
   backend = "s3"
   config = {
     bucket = var.state_bucket_name
-    key = "environments/primary/network_rds/terraform.tfstate"
+    key = "environments/primary/rds/terraform.tfstate"
     region = var.state_bucket_region
   }
 }
