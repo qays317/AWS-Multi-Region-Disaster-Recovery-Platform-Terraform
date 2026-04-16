@@ -4,7 +4,7 @@ locals {
       
       "check-replica-readiness" ={ 
         timeout = 60
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
           DR_REGION                   = var.dr_region
@@ -16,7 +16,7 @@ locals {
 
       "promote-replica" = {
         timeout = 60
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
           DR_REGION             = var.dr_region
@@ -27,7 +27,7 @@ locals {
       
       "check-db-available" = {
         timeout = 60
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
           DR_REGION             = var.dr_region
@@ -38,7 +38,7 @@ locals {
 
       "validate-db-writable" = {
         timeout = 60
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = true
         vpc_config = {
           subnet_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
@@ -54,7 +54,7 @@ locals {
 
       "scaleup-dr-service" = {
         timeout = 60
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
           DR_REGION        = var.dr_region
@@ -67,7 +67,7 @@ locals {
     
       "check-ecs-healthy" = {
         timeout = 60
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
           DR_REGION        = var.dr_region
@@ -79,7 +79,7 @@ locals {
     
       "validate-application" = {
         timeout = 30
-        role = data.terraform_remote_state.iam.lambda_failover_role_arn
+        role = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
           APP_HEALTHCHECK_URL     = var.app_healthcheck_url
