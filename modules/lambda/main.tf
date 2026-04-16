@@ -50,7 +50,7 @@ resource "aws_lambda_function" "main" {
 
 
 resource "aws_lambda_layer_version" "pymysql" {
-  filename   = "../../lambdas/pymysql-layer.zip"
+  filename   = "${path.module}/../../lambdas/pymysql-layer.zip"
   layer_name = "pymysql-layer"
 
   compatible_runtimes = ["python3.12"]
