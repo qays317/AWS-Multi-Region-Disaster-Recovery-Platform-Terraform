@@ -16,11 +16,6 @@ variable "aws_region" {
   default = "eu-central-1"
 }
 
-variable "dr_region" {
-  description = "Disaster recovery AWS region"
-  type        = string
-}
-
 variable "primary_alarm_name" {
   description = "CloudWatch alarm name used to recheck incident status"
   type        = string
