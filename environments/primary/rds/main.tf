@@ -53,7 +53,7 @@ module "lambda" {
 
 
 resource "aws_lambda_invocation" "db_bootstrap" {
-  function_name = local.lambda.each.key
+  function_name = local.lambda[0]
 
   input = jsonencode({
     trigger = "terraform"
