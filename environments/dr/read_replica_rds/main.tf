@@ -41,7 +41,7 @@ resource "aws_db_instance" "read_replica" {
   
   # Network configuration
   db_subnet_group_name = aws_db_subnet_group.rr.name
-  vpc_security_group_ids = module.sg.dr_rds_sg_id
+  vpc_security_group_ids = [module.sg.dr_rds_sg_id]
   
   # Read replicas inherit most settings from source
   skip_final_snapshot = true
