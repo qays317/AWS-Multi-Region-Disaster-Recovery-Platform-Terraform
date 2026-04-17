@@ -1,26 +1,5 @@
 {
   "Comment": "DR failover orchestrator for multi-region ECS + RDS",
-  "StartAt": "RecheckIncident",
-  "States": {
-    "RecheckIncident": {
-      "Type": "Task",
-      "Resource": "${recheck_incident_lambda_arn}",
-      "Next": "IncidentConfirmed?"
-    },
-    "IncidentConfirmed?": {
-      "Type": "Choice",
-      "Choices": [
-        {
-          "Variable": "$.incident_confirmed",
-          "BooleanEquals": true,
-          "Next": "CheckReplicaReadiness"
-        }
-      ],
-      "Default": "StopFalseAlarm"
-    },
-    "StopFalseAlarm": {
-      "Type": "Succeed"
-    },
     "CheckReplicaReadiness": {
       "Type": "Task",
       "Resource": "${check_replica_readiness_lambda_arn}",
