@@ -60,7 +60,7 @@ module "lambda_failover" {
         "secretsmanager:DescribeSecret"
       ]
       Resource = [
-        "arn:aws:secretsmanager:${var.dr_region}:${data.aws_caller_identity.current.account_id}:secret:${var.rds_identifier}-secret*"
+        "arn:aws:secretsmanager:${var.dr_region}:${data.aws_caller_identity.current.account_id}:secret:${var.rds_replica_identifier}-secret*"
       ]
     }
   ]
