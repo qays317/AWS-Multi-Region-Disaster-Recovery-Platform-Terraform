@@ -20,6 +20,15 @@ data "terraform_remote_state" "iam" {
     }
 }
 
+data "terraform_remote_state" "dr_rds" {
+    backend = "s3"
+    config = {
+      bucket = var.state_bucket_name
+      key = "environments/dr/read_replica_rds/terraform.tfstate"
+      region = var.state_bucket_region
+    }
+}
+
 module "sg" {
   source = "../../../modules/sg"
   vpc_id = data.terraform_remote_state.network.outputs.vpc_id
