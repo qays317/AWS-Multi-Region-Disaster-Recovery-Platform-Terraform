@@ -7,6 +7,7 @@ STACK_VARS["global/iam"]="\
   -var primary_region=$PRIMARY_REGION \
   -var dr_region=$DR_REGION \
   -var rds_identifier=$RDS_IDENTIFIER \
+  -var rds_replica_identifier=$RDS_REPLICA_IDENTIFIER \
   -var primary_media_s3_bucket=$PRIMARY_MEDIA_S3_BUCKET \
   -var dr_media_s3_bucket=$DR_MEDIA_S3_BUCKET"
 
