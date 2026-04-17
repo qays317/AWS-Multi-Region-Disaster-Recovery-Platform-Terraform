@@ -21,7 +21,7 @@ resource "aws_db_instance" "rds" {
   storage_encrypted = false
   username = var.rds.username     
   db_name = var.rds.db_name
-  manage_master_user_password = true  
+  manage_master_user_password = false
   backup_retention_period = 7
   skip_final_snapshot = true
 }
