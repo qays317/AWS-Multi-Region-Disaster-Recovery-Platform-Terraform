@@ -94,7 +94,7 @@ module "iam" {
   ]
 
     depends_on = [
-        depends_on = [module.lambda]
+        module.lambda
     ]
 }
 
@@ -136,8 +136,9 @@ resource "aws_sfn_state_machine" "dr_failover_orchestrator" {
   tags = {
     Name = "wordpress-dr-failover-orchestrator"
   }
+
   depends_on = [
-    depends_on = [module.lambda]
+    module.lambda
   ]
 }
 
