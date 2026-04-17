@@ -95,7 +95,7 @@ resource "aws_cloudwatch_log_group" "sfn_logs" {
 
 resource "aws_sfn_state_machine" "dr_failover_orchestrator" {
   name     = "wordpress-dr-failover-orchestrator"
-  role_arn = module.iam.snf_role_arn
+  role_arn = module.iam.role_arn
   type     = "STANDARD"
 
   definition = templatefile(
