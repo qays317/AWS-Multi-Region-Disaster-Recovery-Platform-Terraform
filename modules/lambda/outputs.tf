@@ -1,5 +1,6 @@
 output "primary_db_setup_name" {
-    value = aws_lambda_function.main["primary-db-setup"].function_name
+    value = try({for k, v in aws_lambda_function.main : k => v.function_name
+                  if lookup( v.tags, "Name", "") == "primary_db_setup"}, null)   
 }
 
 output "snf_functions_arns" {
