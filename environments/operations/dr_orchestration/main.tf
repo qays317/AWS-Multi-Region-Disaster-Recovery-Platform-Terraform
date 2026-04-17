@@ -34,6 +34,10 @@ module "sg" {
   vpc_id = data.terraform_remote_state.network.outputs.vpc_id
   vpc_cidr = data.terraform_remote_state.network.outputs.vpc_cidr
   security_group = var.security_group_config
+  external_security_groups = {
+    "DR-RDS-SG"                     = data.terraform_remote_state.dr_rds.outputs.dr_rds_sg_id
+    "DR-SecretsManager-Endpoint-SG" = data.terraform_remote_state.dr_rds.outputs.dr_secret_manager_endpoint_sg_id
+  }
   stage_tag = "DR Orchestration"
 }
 
