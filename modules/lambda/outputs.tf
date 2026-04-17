@@ -38,7 +38,7 @@ output "check_ecs_healthy_arn" {
                   if lookup( v.tags, "Name", "") == "check-ecs-healthy"}, null)   
 }
 
-output "validate_application_arn " {
+output "validate_application_arn" {
     value = try({for k, v in aws_lambda_function.main : k => v.arn
                   if lookup( v.tags, "Name", "") == "validate-application"}, null)   
 }
