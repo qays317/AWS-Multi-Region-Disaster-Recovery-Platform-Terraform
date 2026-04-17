@@ -99,7 +99,7 @@ resource "aws_sfn_state_machine" "dr_failover_orchestrator" {
   type     = "STANDARD"
 
   definition = templatefile(
-    "wordpress/dr-failover-orchestrator.asl.json",
+    "${path.module}/../../../stepfunctions/dr-failover-orchestrator.asl.json",
     {
         snf_functions_arns = module.lambda.snf_functions_arns
     }
