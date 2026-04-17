@@ -50,5 +50,4 @@ vpc_endpoints_config = {
     "ssmmessages" = "Interface",
     "ssm" = "Interface",
     "ec2messages" = "Interface",
-    "secretsmanager" = "Interface"
 }
