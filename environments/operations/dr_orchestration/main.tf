@@ -65,9 +65,9 @@ module "iam" {
     },
 
     {
-      effect = "Allow"
+      Effect = "Allow"
 
-      actions = [
+      Actions = [
         "logs:CreateLogDelivery",
         "logs:GetLogDelivery",
         "logs:UpdateLogDelivery",
@@ -78,7 +78,7 @@ module "iam" {
         "logs:DescribeLogGroups"
       ]
 
-      resources = ["*"]
+      Resources = ["*"]
     }
   ]
 }
