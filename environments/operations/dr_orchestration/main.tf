@@ -57,11 +57,11 @@ module "iam" {
     {
       Effect = "Allow"
 
-      Actions = [
+      Action = [
         "lambda:InvokeFunction"
       ]
 
-      Resources = [
+      Resource = [
         module.lambda.snf_functions_arns
       ] 
     },
@@ -69,7 +69,7 @@ module "iam" {
     {
       Effect = "Allow"
 
-      Actions = [
+      Action = [
         "logs:CreateLogDelivery",
         "logs:GetLogDelivery",
         "logs:UpdateLogDelivery",
@@ -80,7 +80,7 @@ module "iam" {
         "logs:DescribeLogGroups"
       ]
 
-      Resources = ["*"]
+      Resource = ["*"]
     }
   ]
 }
