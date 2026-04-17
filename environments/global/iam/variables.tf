@@ -8,6 +8,10 @@ variable "rds_identifier" {
     type = string
 }
 
+variable "rds_replica_identifier" {
+    type = string
+}
+
 variable "primary_media_s3_bucket" {
     type = string
 }
