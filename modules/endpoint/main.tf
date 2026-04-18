@@ -7,6 +7,7 @@ data "aws_route_tables" "private" {
   }
 }
 
+data "aws_region" "current" {}
 
 # VPC Endpoints
 resource "aws_vpc_endpoint" "main" {
