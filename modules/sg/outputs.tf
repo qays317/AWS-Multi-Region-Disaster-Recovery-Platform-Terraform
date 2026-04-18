@@ -6,7 +6,7 @@ output "rds_sg_id" {
 }
 
 output "db_setup_lambda_security_group_id" {
-    value = aws_security_group.main["db_setup_lambda_security_group_id"].id
+    value = aws_security_group.main["DB-Setup-Lambda-SG"].id
 }
 
 output "secretsmanager_endpoint_sg_id" {
