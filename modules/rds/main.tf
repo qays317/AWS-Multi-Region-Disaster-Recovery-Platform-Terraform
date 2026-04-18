@@ -21,7 +21,7 @@ resource "aws_db_instance" "rds" {
   storage_encrypted = false
   username = var.rds.username     
   db_name = var.rds.db_name
-  password = var.rds.rds_password
+  password = var.rds.password
   manage_master_user_password = true
   backup_retention_period = 7
   skip_final_snapshot = true
@@ -32,10 +32,23 @@ resource "aws_db_instance" "rds" {
 //                                                    Secrets + Secrets Manager Endpoint
 //==========================================================================================================================================
 
+
 resource "aws_secretsmanager_secret" "wordpress" {
-  name = "${var.rds_identifier}-secret"
-  description = "WordPress database credentials"
+  name                    = "${var.rds_identifier}-secret"
+  description             = "WordPress database credentials"
   recovery_window_in_days = 0
+}
+
+resource "aws_secretsmanager_secret_version" "wordpress" {
+  secret_id = aws_secretsmanager_secret.wordpress.id
+
+  secret_string = jsonencode({
+    username = var.rds.username
+    password = var.rds.password
+    dbname   = var.rds.db_name
+    host     = split(":", aws_db_instance.rds.endpoint)[0]
+    port     = aws_db_instance.rds.port
+  })
 }
 
 data "aws_region" "current" {}  
