@@ -30,10 +30,10 @@ variable "rds_config" {
         instance_class = string 
         multi_az = bool  
         security_group_name = string
-        username = string 
+        username = string
+        password = string
         db_username = string 
         db_name = string
-        rds_password = string
         subnets_names = list(string)
     })
 }
