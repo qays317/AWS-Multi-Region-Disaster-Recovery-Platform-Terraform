@@ -48,7 +48,7 @@ rds_config = {
     db_username = "dbuser"      # Replace with your DB username
     db_name = "wordpressDB" 
     multi_az = false
-    rds_password = "rdsadmin"
+    password = "rdsadmin"
     subnets_names = ["Prv-A", "Prv-B"]
     security_group_name = "RDS-SG"
 }
