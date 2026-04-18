@@ -51,7 +51,7 @@ resource "aws_secretsmanager_secret_version" "wordpress" {
 
   secret_string = jsonencode({
     username = var.rds.username
-    password = var.rds.password
+    password = random_password.db.result
     dbname   = var.rds.db_name
     host     = split(":", aws_db_instance.rds.endpoint)[0]
     port     = aws_db_instance.rds.port
