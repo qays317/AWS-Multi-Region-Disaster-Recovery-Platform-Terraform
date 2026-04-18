@@ -19,9 +19,10 @@ resource "aws_db_instance" "rds" {
   allocated_storage = 20    
   storage_type = "gp2"             
   storage_encrypted = false
-  username = var.rds.username     
-  db_name = var.rds.db_name
+  username = var.rds.username
+  manage_master_user_password = false
   password = var.rds.password
+  db_name = var.rds.db_name
   backup_retention_period = 7
   skip_final_snapshot = true
 }
@@ -69,8 +70,7 @@ resource "aws_vpc_endpoint" "secretsmanager" {
         Principal = "*"
         Action = "secretsmanager:*"
         Resource = [
-          aws_secretsmanager_secret.wordpress.arn,
-          aws_db_instance.rds.master_user_secret[0].secret_arn
+          aws_secretsmanager_secret.wordpress.arn
         ]
       }
     ]
