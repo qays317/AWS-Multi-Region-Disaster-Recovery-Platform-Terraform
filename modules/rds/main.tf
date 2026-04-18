@@ -22,7 +22,6 @@ resource "aws_db_instance" "rds" {
   username = var.rds.username     
   db_name = var.rds.db_name
   password = var.rds.password
-  manage_master_user_password = true
   backup_retention_period = 7
   skip_final_snapshot = true
 }
