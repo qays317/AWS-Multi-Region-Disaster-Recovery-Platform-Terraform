@@ -26,6 +26,7 @@ variable "rds" {
         subnets_names = list(string)
         # Database Setup
         username = string                   # Master admin user name
+        password = string
         db_name = string
         db_username = string                # wordpress database username - it will be created using (Lambda / bastion host)
     })
