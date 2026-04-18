@@ -8,6 +8,7 @@ module "network" {
 module "sg" {
   source = "../../../modules/sg"
   vpc_id = module.network.vpc_id
+  vpc_cidr = module.network.vpc_cidr
   security_group = var.security_group_config
   stage_tag = "Network" 
 }
