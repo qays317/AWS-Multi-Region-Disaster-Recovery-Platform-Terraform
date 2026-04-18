@@ -26,7 +26,7 @@ resource "aws_db_instance" "rds" {
   allocated_storage = 20    
   storage_type = "gp2"             
   storage_encrypted = false
-  username = قandom_password.db.result
+  username = random_password.db.result
   manage_master_user_password = false
   password = var.rds.password
   db_name = var.rds.db_name
