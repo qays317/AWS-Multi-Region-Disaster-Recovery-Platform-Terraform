@@ -27,7 +27,6 @@ resource "aws_db_instance" "rds" {
   storage_type = "gp2"             
   storage_encrypted = false
   username = var.rds.db_username
-  manage_master_user_password = false
   password = random_password.db.result
   db_name = var.rds.db_name
   backup_retention_period = 7
