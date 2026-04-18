@@ -23,8 +23,8 @@ output "public_subnets_ids" {
 
 
 
-output "db_setup_lambda_security_group_id" {
-    value = module.sg.db_setup_lambda_security_group_id  
+output "db_setup_lambda_sg_id" {
+    value = module.sg.db_setup_lambda_sg_id  
 }
 
 output "secretsmanager_endpoint_sg_id" {
