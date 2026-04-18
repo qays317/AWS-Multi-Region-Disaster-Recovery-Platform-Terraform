@@ -30,7 +30,7 @@ security_group_config = {
             }
         }
     }
-    Lambda-SG = {
+    DB-Setup-Lambda-SG = {
         egress = {
             mysql_access = {
                 ip_protocol = "tcp"
