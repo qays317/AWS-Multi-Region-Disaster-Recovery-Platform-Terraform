@@ -38,6 +38,8 @@ STACK_VARS["dr/network"]="\
 # PRIMARY S3
 STACK_VARS["primary/s3"]="\
   -var primary_region=$PRIMARY_REGION \
+  -var state_bucket_name=$TF_STATE_BUCKET_NAME \
+  -var state_bucket_region=$TF_STATE_BUCKET_REGION \
   -var s3_bucket_name=$PRIMARY_MEDIA_S3_BUCKET"
 
 # PRIMARY ALB
