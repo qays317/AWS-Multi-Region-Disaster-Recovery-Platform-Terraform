@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "wordpress" {
 }
 
 
-resource "random_password" "db" {
+resource "random_password" "master" {
   length  = 20
   special = false
 }
@@ -26,8 +26,8 @@ resource "aws_db_instance" "rds" {
   allocated_storage = 20    
   storage_type = "gp2"             
   storage_encrypted = false
-  username = var.rds.db_username
-  password = random_password.db.result
+  username = var.rds.username
+  password = random_password.master.result
   db_name = var.rds.db_name
   backup_retention_period = 7
   skip_final_snapshot = true
