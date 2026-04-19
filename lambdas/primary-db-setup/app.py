@@ -14,17 +14,16 @@ secrets_client = boto3.client("secretsmanager")
 
 
 def generate_password(length=32):
-    chars = string.ascii_letters + string.digits + "!@#$^&*()_+-="
+    chars = string.ascii_letters + string.digits + "!#$%^&*()-_=+"
     return "".join(secrets.choice(chars) for _ in range(length))
 
 
 def lambda_handler(event, context):
     logger.info("Starting database setup Lambda function")
 
+    conn = None
+
     try:
-        # ───────────────────────────────────────────────
-        # Load env vars
-        # ───────────────────────────────────────────────
         master_secret_arn = os.environ["MASTER_SECRET_ARN"]
         wordpress_secret_name = os.environ["WORDPRESS_SECRET_NAME"]
         db_host = os.environ["DB_HOST"]
@@ -34,21 +33,14 @@ def lambda_handler(event, context):
 
         logger.info("Loaded environment variables")
 
-        # ───────────────────────────────────────────────
-        # Fetch master creds
-        # ───────────────────────────────────────────────
-        master_secret = secrets_client.get_secret_value(
-            SecretId=master_secret_arn
-        )
+        master_secret = secrets_client.get_secret_value(SecretId=master_secret_arn)
         master_creds = json.loads(master_secret["SecretString"])
+
         master_username = master_creds["username"]
         master_password = master_creds["password"]
 
         logger.info("Master credentials retrieved")
 
-        # ───────────────────────────────────────────────
-        # Connect to MySQL
-        # ───────────────────────────────────────────────
         conn = pymysql.connect(
             host=db_host,
             user=master_username,
@@ -57,43 +49,38 @@ def lambda_handler(event, context):
             port=db_port,
             connect_timeout=10,
             cursorclass=pymysql.cursors.DictCursor,
+            autocommit=False,
         )
-        cursor = conn.cursor()
 
-        # ───────────────────────────────────────────────
-        # Check if user exists
-        # ───────────────────────────────────────────────
-        cursor.execute(
-            "SELECT User FROM mysql.user WHERE User = %s",
-            (wp_db_user,)
-        )
-        user_exists = cursor.fetchone()
+        with conn.cursor() as cursor:
+            cursor.execute(
+                "SELECT User FROM mysql.user WHERE User = %s",
+                (wp_db_user,)
+            )
+            user_exists = cursor.fetchone()
 
-        wp_db_password = generate_password()
+            wp_db_password = generate_password()
 
-        # ───────────────────────────────────────────────
-        # Create or update user
-        # ───────────────────────────────────────────────
-        if user_exists:
-            logger.info("User exists — rotating password")
-            cursor.execute(f"ALTER USER '{wp_db_user}'@'%' IDENTIFIED BY %s", (wp_db_password,))
-        else:
-            logger.info("User does not exist — creating")
-            cursor.execute(f"CREATE USER '{wp_db_user}'@'%' IDENTIFIED BY %s", (wp_db_password,))
+            if user_exists:
+                logger.info("User exists — rotating password")
+                cursor.execute(
+                    f"ALTER USER '{wp_db_user}'@'%' IDENTIFIED BY %s",
+                    (wp_db_password,)
+                )
+            else:
+                logger.info("User does not exist — creating")
+                cursor.execute(
+                    f"CREATE USER '{wp_db_user}'@'%' IDENTIFIED BY %s",
+                    (wp_db_password,)
+                )
 
-        # ───────────────────────────────────────────────
-        # Grant privileges
-        # ───────────────────────────────────────────────
-        cursor.execute(
-            "GRANT ALL PRIVILEGES ON `{}`.* TO %s@%s".format(wp_db_name),
-            (wp_db_user, "%")
-        )
-        cursor.execute("FLUSH PRIVILEGES")
+            cursor.execute(
+                f"GRANT ALL PRIVILEGES ON `{wp_db_name}`.* TO '{wp_db_user}'@'%'"
+            )
+            cursor.execute("FLUSH PRIVILEGES")
+
         conn.commit()
 
-        # ───────────────────────────────────────────────
-        # Store credentials in secrets
-        # ───────────────────────────────────────────────
         wp_secret_value = {
             "username": wp_db_user,
             "password": wp_db_password,
@@ -114,3 +101,7 @@ def lambda_handler(event, context):
         logger.error(f"ERROR: {e}")
         logger.error(traceback.format_exc())
         raise
+
+    finally:
+        if conn:
+            conn.close()
