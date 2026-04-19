@@ -10,7 +10,7 @@ resource "aws_db_subnet_group" "wordpress" {
 
 resource "random_password" "db" {
   length  = 20
-  special = true
+  special = false
 }
 
 
