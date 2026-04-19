@@ -16,7 +16,9 @@ output "private_subnets_ids" {
 
 
 
-
+output "read_replica_sg_id" {
+    value = module.sg.rds_sg_id
+}
 
 output "secretsmanager_endpoint_sg_id" {
     value = module.sg.secretsmanager_endpoint_sg_id
