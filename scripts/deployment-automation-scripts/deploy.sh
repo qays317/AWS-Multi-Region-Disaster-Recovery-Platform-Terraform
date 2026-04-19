@@ -103,10 +103,10 @@ CLOUDFRONT_DISTRIBUTION_ARN=$(terraform -chdir="environments/global/cdn_dns" out
 #DR_S3_VPC_ENDPOINT_ID=$(terraform -chdir="environments/dr/ecs" output -raw s3_vpc_endpoint_id)
 STACK_VARS["primary/s3"]+=" \
   -var cloudfront_distribution_arn=$CLOUDFRONT_DISTRIBUTION_ARN \
-  -var ecs_task_role_arn=$ECS_TASK_ROLE_ARN 
+  -var ecs_task_role_arn=$ECS_TASK_ROLE_ARN"
 STACK_VARS["dr/s3"]+=" \
   -var cloudfront_distribution_arn=$CLOUDFRONT_DISTRIBUTION_ARN \
-  -var ecs_task_role_arn=$ECS_TASK_ROLE_ARN 
+  -var ecs_task_role_arn=$ECS_TASK_ROLE_ARN" 
 
 deploy_stack "primary/s3"
 deploy_stack "dr/s3"
