@@ -64,18 +64,18 @@ def lambda_handler(event, context):
             if user_exists:
                 logger.info("User exists — rotating password")
                 cursor.execute(
-                    f"ALTER USER '{wp_db_user}'@'%' IDENTIFIED BY %s",
+                    f"ALTER USER '{wp_db_user}'@'%%' IDENTIFIED BY %s",
                     (wp_db_password,)
                 )
             else:
                 logger.info("User does not exist — creating")
                 cursor.execute(
-                    f"CREATE USER '{wp_db_user}'@'%' IDENTIFIED BY %s",
+                    f"CREATE USER '{wp_db_user}'@'%%' IDENTIFIED BY %s",
                     (wp_db_password,)
                 )
 
             cursor.execute(
-                f"GRANT ALL PRIVILEGES ON `{wp_db_name}`.* TO '{wp_db_user}'@'%'"
+                f"GRANT ALL PRIVILEGES ON `{wp_db_name}`.* TO '{wp_db_user}'@'%%'"
             )
             cursor.execute("FLUSH PRIVILEGES")
 
