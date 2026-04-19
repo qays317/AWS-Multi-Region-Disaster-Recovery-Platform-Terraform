@@ -24,3 +24,7 @@ output "wordpress_service_sg_id" {
 output "vpc_endpoints_sg_id" {
     value = aws_security_group.main["vpc-endpoints-SG"].id
 }
+
+output "lambda_validate_db_writable_sg_id" {
+    value = try(aws_security_group.main["Lambda-validate-db-writable-SG"].id, null)
+}
