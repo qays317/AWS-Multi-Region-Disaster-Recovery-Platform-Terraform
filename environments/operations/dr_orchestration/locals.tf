@@ -42,7 +42,7 @@ locals {
         layer = true
         vpc_config = {
           subnet_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
-          security_group_ids = [module.sg.lambda-validate-db-writable_sg_id]
+          security_group_ids = [data.terraform_remote_state.network.outputs.lambda_validate_db_writable_sg_id]
         }
         environment = {
           DB_SECRET_ARN = data.terraform_remote_state.dr_rds.outputs.wordpress_secret_arn
