@@ -39,20 +39,27 @@ resource "aws_db_instance" "rds" {
 //==========================================================================================================================================
 
 
-resource "aws_secretsmanager_secret" "wordpress" {
-  name = "${var.rds_identifier}-secret"
-  description = "WordPress database credentials"
+resource "aws_secretsmanager_secret" "master" {
+  name                    = "${var.rds_identifier}-master-secret"
+  description             = "Master DB credentials"
   recovery_window_in_days = 0
 }
 
-resource "aws_secretsmanager_secret_version" "wordpress" {
-  secret_id = aws_secretsmanager_secret.wordpress.id
+resource "aws_secretsmanager_secret_version" "master" {
+  secret_id = aws_secretsmanager_secret.master.id
 
   secret_string = jsonencode({
     username = var.rds.username
-    password = random_password.db.result
+    password = random_password.master.result
     dbname   = var.rds.db_name
     host     = split(":", aws_db_instance.rds.endpoint)[0]
     port     = aws_db_instance.rds.port
   })
 }
+
+resource "aws_secretsmanager_secret" "wordpress" {
+  name                    = "${var.rds_identifier}-secret"
+  description             = "WordPress application database credentials"
+  recovery_window_in_days = 0
+}
+
