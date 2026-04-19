@@ -27,7 +27,7 @@ module "alb" {
   vpc_id = data.terraform_remote_state.network.outputs.vpc_id
   public_subnet_ids = data.terraform_remote_state.network.outputs.public_subnets_ids
   # ALB configuration
-  alb_security_group_id = data.terraform_remote_state.network.outputs.alb_security_group_id
+  alb_security_group_id = data.terraform_remote_state.network.outputs.alb_sg_id
   target_group = var.target_group_config
   alb_name = var.alb_name
   # SSL certificate (whether to create it or already provided)
