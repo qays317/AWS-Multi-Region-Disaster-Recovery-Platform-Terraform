@@ -64,7 +64,6 @@ module "ecs" {
     # Docker image
     ecr_image_uri = var.ecr_image_uri
     # ECS configuration
-    security_groups = module.sg_ecs.ecs_security_groups
     ecs_cluster_name = var.ecs_cluster_name
     ecs_execution_role_arn = data.terraform_remote_state.iam.outputs.ecs_execution_role_arn
     ecs_task_role_arn = data.terraform_remote_state.iam.outputs.ecs_task_role_arn
