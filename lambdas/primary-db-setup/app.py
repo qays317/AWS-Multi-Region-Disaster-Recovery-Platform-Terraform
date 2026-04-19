@@ -110,7 +110,7 @@ def lambda_handler(event, context):
         logger.info("Database setup completed successfully")
         return {"statusCode": 200, "body": "WordPress DB setup complete"}
 
-    except Exception as e:
-        logger.error(f"ERROR: {e}")
-        logger.error(traceback.format_exc())
-        return {"statusCode": 500, "body": str(e)}
+        except Exception as e:
+            logger.error(f"ERROR: {e}")
+            logger.error(traceback.format_exc())
+            raise
