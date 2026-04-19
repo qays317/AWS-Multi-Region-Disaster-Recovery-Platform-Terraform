@@ -28,7 +28,7 @@ locals {
         layer = true
         environment = {
             MASTER_SECRET_ARN   = module.rds.master_secret_arn
-            WORDPRESS_SECRET_NAME = module.rds.wordpress_secret_arn
+            WORDPRESS_SECRET_NAME = module.rds.wordpress_secret_name
             DB_HOST = split(":", module.rds.rds_endpoint)[0]
             DB_PORT = tostring(module.rds.rds_port)
             WORDPRESS_DB_NAME  = local.rds_config.db_name
