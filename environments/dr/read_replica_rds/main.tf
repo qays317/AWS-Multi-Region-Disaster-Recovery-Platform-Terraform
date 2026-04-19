@@ -17,14 +17,6 @@ data "terraform_remote_state" "primary_rds" {
   }
 }
 
-module "sg" {
-  source = "../../../modules/sg"
-  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
-  vpc_cidr = data.terraform_remote_state.network.outputs.vpc_cidr
-  security_group = var.dr_rds_security_group_config
-  stage_tag = "RDS"
-}
-
 # Get primary RDS instance info
 data "aws_db_instance" "primary" {
   db_instance_identifier = var.rds_identifier
