@@ -6,7 +6,7 @@ output "rds_sg_id" {
 }
 
 output "db_setup_lambda_sg_id" {
-    value = aws_security_group.main["DB-Setup-Lambda-SG"].id
+    value = try(aws_security_group.main["DB-Setup-Lambda-SG"].id, null)
 }
 
 output "secretsmanager_endpoint_sg_id" {
