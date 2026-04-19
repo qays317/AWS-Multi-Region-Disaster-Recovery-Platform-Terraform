@@ -19,5 +19,5 @@ module "s3" {
 
     cloudfront_distribution_arn = var.cloudfront_distribution_arn
     ecs_task_role_arn = var.ecs_task_role_arn
-    s3_vpc_endpoint_id = data.terraform_remote_state.outputs.s3_vpc_endpoint_id
+    s3_vpc_endpoint_id = data.terraform_remote_state.network.outputs.s3_vpc_endpoint_id
 }
