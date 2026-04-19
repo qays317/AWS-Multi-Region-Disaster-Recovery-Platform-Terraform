@@ -55,16 +55,20 @@ aws lambda invoke \
   --function-name primary-db-setup \
   --payload '{"trigger":"terraform"}' \
   --cli-binary-format raw-in-base64-out \
+  --log-type Tail \
   /tmp/db-bootstrap.json \
-  --region us-east-1
+  --region us-east-1 > /tmp/db-bootstrap-meta.json
 
-echo "Verifying secret..."
+echo "=== Lambda payload ==="
+cat /tmp/db-bootstrap.json
+echo
 
-aws secretsmanager get-secret-value \
-  --secret-id wordpress-rds-secret \
-  --region us-east-1
+echo "=== Lambda metadata ==="
+cat /tmp/db-bootstrap-meta.json
+echo
 
-echo "DB bootstrap complete"
+
+
 deploy_stack "dr/network"
 deploy_stack "primary/s3"
 deploy_stack "primary/alb"
