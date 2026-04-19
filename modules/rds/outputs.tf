@@ -14,6 +14,10 @@ output "master_secret_arn" {
     value = aws_secretsmanager_secret.master.arn
 }
 
+output "wordpress_secret_name" {
+    value = aws_secretsmanager_secret.wordpress.name
+}
+
 output "rds_port" {
     value = aws_db_instance.rds.port
 }
