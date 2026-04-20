@@ -27,7 +27,7 @@ STACK_VARS["primary/rds"]="\
   -var rds_identifier=$RDS_IDENTIFIER \
   -var primary_region=$PRIMARY_REGION \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
-  -var state_bucket_region=$TF_STATE_BUCKET_REGION 
+  -var state_bucket_region=$TF_STATE_BUCKET_REGION"
   
 # DR NETWORK
 STACK_VARS["dr/network"]="\
