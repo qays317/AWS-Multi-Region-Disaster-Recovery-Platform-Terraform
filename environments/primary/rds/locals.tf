@@ -7,7 +7,7 @@ locals {
       db_username = "wordpressuser"      # Replace with your DB username
       db_name = "wordpressDB" 
       multi_az = false
-      subnet_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
+      subnets_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
       security_group_id = data.terraform_remote_state.network.outputs.rds_sg_id
   }
 }
