@@ -10,9 +10,6 @@ locals {
       subnets_ids = data.terraform_remote_state.network.outputs.private_subnets_ids
       security_group_id = data.terraform_remote_state.network.outputs.rds_sg_id
   }
-}
-
-locals {
 
   lambda = {
       
@@ -34,8 +31,6 @@ locals {
         }
       }
   }
-}
 
-locals {
   lambda_source_base = "${path.module}/../../../lambdas"
 }

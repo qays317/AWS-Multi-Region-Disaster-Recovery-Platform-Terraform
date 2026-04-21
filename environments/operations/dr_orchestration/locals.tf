@@ -82,9 +82,9 @@ locals {
         role_arn = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
         layer = false
         environment = {
-          APP_HEALTHCHECK_URL     = var.app_healthcheck_url
-          APP_HEALTHCHECK_TIMEOUT = tostring(var.app_healthcheck_timeout)
-          EXPECTED_STATUS_CODE    = tostring(var.expected_status_code)
+          APP_HEALTHCHECK_URL     = var.app_healthcheck.path
+          APP_HEALTHCHECK_TIMEOUT = tostring(var.app_healthcheck.timeout)
+          EXPECTED_STATUS_CODE    = tostring(var.app_healthcheck.status_code)
         }
         component = "DR Orchestration"
       }

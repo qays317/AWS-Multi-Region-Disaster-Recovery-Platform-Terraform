@@ -9,4 +9,3 @@ target_group_config = {
 } 
 
 alb_name = "wordpress-alb"
-

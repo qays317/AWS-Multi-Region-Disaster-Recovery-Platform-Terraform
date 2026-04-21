@@ -4,6 +4,7 @@ locals {
         "A" = data.aws_availability_zones.available.names[0]
         "B" = data.aws_availability_zones.available.names[1]
     }
+
     subnet_config = {
         Pub-A = {
             cidr_block = "172.16.0.0/20"
@@ -26,9 +27,6 @@ locals {
             map_public_ip_on_launch = false
         }
     }
-}
-
-locals {
     
     vpc_endpoints_config = {
         "secretsmanager" = {

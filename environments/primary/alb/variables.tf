@@ -1,5 +1,5 @@
 //=============================================================================================================
-//     ALB Variables
+//     SSL Variables
 //=============================================================================================================
 
 variable "primary_domain" {
@@ -22,15 +22,20 @@ variable "provided_ssl_certificate_arn" {
     default = ""
 }
 
+
+//=============================================================================================================
+//     ALB Variables
+//=============================================================================================================
+
 variable "target_group_config" {
     type = object({
         name = string
         health_check_enabled = bool
         health_check_interval = number
-        health_check_timeout  = number
-        healthy_threshold     = number
-        unhealthy_threshold   = number
-        matcher              = string
+        health_check_timeout = number
+        healthy_threshold = number
+        unhealthy_threshold = number
+        matcher = string
     })
 }
 

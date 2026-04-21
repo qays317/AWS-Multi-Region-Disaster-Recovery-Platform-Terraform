@@ -67,6 +67,7 @@ security_group_config = {
                 to_port = 443
                 ip_protocol = "tcp"
                 cidr_block = "0.0.0.0/0"
+                # prefix_list_ids = ["pl-38a64351"]
             }
         }
         egress = {

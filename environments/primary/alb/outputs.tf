@@ -9,6 +9,11 @@ output "alb_zone_id" {
 output "target_group_arn" {
     value = module.alb.target_group_arn
 }
+
+
+//---------------------------------------------------
+// For CloudWatch alarm 
+//---------------------------------------------------
 output "target_group_arn_suffix" {
     value = module.alb.target_group_arn_suffix
 }

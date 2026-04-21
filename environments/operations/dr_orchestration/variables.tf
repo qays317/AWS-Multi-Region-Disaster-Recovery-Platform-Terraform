@@ -49,20 +49,15 @@ variable "db_connect_timeout" {
   default     = 5
 }
 
-variable "app_healthcheck_url" {
-  description = "Direct DR application healthcheck URL"
-  type        = string
-  default = "/"
-}
-
-variable "app_healthcheck_timeout" {
-  description = "Timeout for application validation"
-  type        = number
-  default     = 10
-}
-
-variable "expected_status_code" {
-  description = "Expected application healthcheck status code"
-  type        = number
-  default     = 200
+variable "app_healthcheck" {
+  type = object({
+    path         = string
+    timeout      = number
+    status_code  = number
+  })
+  default = {
+    path        = "/"
+    timeout     = 10
+    status_code = 200
+  }
 }
