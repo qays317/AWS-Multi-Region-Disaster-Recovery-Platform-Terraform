@@ -9,26 +9,31 @@ variable "max_replication_lag_seconds" {
   default     = 30
 }
 
-variable "ecs_cluster_name" {
-  description = "ECS cluster name in DR region"
-  type        = string
-}
-
-variable "ecs_service_name" {
-  description = "ECS service name in DR region"
-  type        = string
-}
-
-variable "dr_desired_count" {
-  description = "Desired count for DR ECS service during failover"
-  type        = number
-  default     = 2
-}
-
 variable "db_connect_timeout" {
   description = "DB connection timeout in seconds"
   type        = number
   default     = 5
+}
+
+variable "ecs" {
+  type = object({
+    cluster_name  = string
+    service_name  = string
+    desired_count = number
+  })
+}
+
+variable "app_healthcheck" {
+  type = object({
+    path        = string
+    timeout     = number
+    status_code = number
+  })
+  default = {
+    path        = "/"
+    timeout     = 10
+    status_code = 200
+  }
 }
 
 variable "app_healthcheck" {
