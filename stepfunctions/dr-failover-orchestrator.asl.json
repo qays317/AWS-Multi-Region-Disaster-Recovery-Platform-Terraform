@@ -5,83 +5,99 @@
     "ReplicaFailoverHandler": {
       "Type": "Task",
       "Resource": "${replica_failover_handler_lambda_arn}",
+      "ResultPath": "$.replica",
       "Next": "DBAvailable?"
     },
+
     "DBAvailable?": {
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.db_available",
+          "Variable": "$.replica.db_available",
           "BooleanEquals": true,
           "Next": "ValidateDBWritable"
         }
       ],
       "Default": "FailReplicaFailover"
     },
+
     "FailReplicaFailover": {
       "Type": "Fail",
       "Cause": "Replica failover handler failed"
     },
+
     "ValidateDBWritable": {
       "Type": "Task",
       "Resource": "${validate_db_writable_lambda_arn}",
+      "ResultPath": "$.db",
       "Next": "DBWritable?"
     },
+
     "DBWritable?": {
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.db_writable",
+          "Variable": "$.db.db_writable",
           "BooleanEquals": true,
           "Next": "ServiceRecoveryHandler"
         }
       ],
       "Default": "FailDBNotWritable"
     },
+
     "FailDBNotWritable": {
       "Type": "Fail",
       "Cause": "Promoted database is not writable"
     },
+
     "ServiceRecoveryHandler": {
       "Type": "Task",
       "Resource": "${service_recovery_handler_lambda_arn}",
+      "ResultPath": "$.ecs",
       "Next": "ECSHealthy?"
     },
+
     "ECSHealthy?": {
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.ecs_healthy",
+          "Variable": "$.ecs.ecs_healthy",
           "BooleanEquals": true,
           "Next": "ValidateApplication"
         }
       ],
       "Default": "FailServiceRecovery"
     },
+
     "FailServiceRecovery": {
       "Type": "Fail",
       "Cause": "Service recovery handler failed"
     },
+
     "ValidateApplication": {
       "Type": "Task",
       "Resource": "${validate_application_lambda_arn}",
+      "ResultPath": "$.app",
       "Next": "ApplicationHealthy?"
     },
+
     "ApplicationHealthy?": {
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.app_healthy",
+          "Variable": "$.app.app_healthy",
           "BooleanEquals": true,
           "Next": "FailoverCompleted"
         }
       ],
       "Default": "FailApplicationValidation"
     },
+
     "FailApplicationValidation": {
       "Type": "Fail",
       "Cause": "Application validation failed after failover"
     },
+
     "FailoverCompleted": {
       "Type": "Succeed"
     }
