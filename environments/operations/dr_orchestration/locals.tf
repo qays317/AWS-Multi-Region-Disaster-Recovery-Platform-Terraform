@@ -13,9 +13,9 @@ locals {
       timeout = 300
       environment = {
         DR_REGION        = var.dr_region
-        ECS_CLUSTER_NAME = var.ecs.cluster_name
-        ECS_SERVICE_NAME = var.ecs.service_name
-        DR_DESIRED_COUNT = tostring(var.ecs.desired_count)
+        ECS_CLUSTER_NAME = var.ecs_cluster_name
+        ECS_SERVICE_NAME = var.ecs_service_name
+        DR_DESIRED_COUNT = tostring(var.ecs_desired_count)
       }
     }
 
