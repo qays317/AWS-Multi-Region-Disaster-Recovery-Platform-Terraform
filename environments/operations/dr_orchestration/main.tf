@@ -1,21 +1,3 @@
-data "terraform_remote_state" "network" {
-    backend = "s3"
-    config = {
-      bucket = var.state_bucket_name
-      key = "environments/dr/network/terraform.tfstate"
-      region = var.state_bucket_region
-    }
-}
-
-data "terraform_remote_state" "iam" {
-    backend = "s3"
-    config = {
-      bucket = var.state_bucket_name
-      key = "environments/global/iam/terraform.tfstate"
-      region = var.state_bucket_region
-    }
-}
-
 data "terraform_remote_state" "dr_rds" {
     backend = "s3"
     config = {
