@@ -31,7 +31,7 @@ def lambda_handler(event, context):
       }
     """
     db_secret_arn = os.environ["DB_SECRET_ARN"]
-    timeout = int(os.environ.get("DB_CONNECT_TIMEOUT", "5"))
+    timeout = int(os.environ.get("DB_CONNECT_TIMEOUT", "15"))
 
     conn = None
 
