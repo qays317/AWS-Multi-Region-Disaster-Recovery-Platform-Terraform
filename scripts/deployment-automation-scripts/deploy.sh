@@ -122,9 +122,9 @@ deploy_stack "operations/dr_orchestration"
 # Failoverr Alarms
 STACK_VARS["primary/failover_alarms"]+=" \
   -var sns_email=$SNS_EMAIL \
-  -var ecs_cluster_name=$ECS_CLUSTER_NAME
-  -var ecs_service_name=$ECS_SERVICE_NAME"
-
+  -var ecs.cluster_name=$ECS_CLUSTER_NAME \
+  -var ecs.service_name=$ECS_SERVICE_NAME"
+  
 deploy_stack "primary/failover_alarms"
 
 
