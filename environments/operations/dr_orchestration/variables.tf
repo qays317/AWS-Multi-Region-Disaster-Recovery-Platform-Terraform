@@ -21,6 +21,9 @@ variable "ecs" {
     service_name  = string
     desired_count = number
   })
+  default = {
+    desired_count = 2
+  }
 }
 
 variable "app_healthcheck" {
