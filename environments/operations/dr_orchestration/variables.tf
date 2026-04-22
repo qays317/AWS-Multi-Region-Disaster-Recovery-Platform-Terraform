@@ -15,12 +15,17 @@ variable "db_connect_timeout" {
   default     = 5
 }
 
-variable "ecs" {
-  type = object({
-    cluster_name  = string
-    service_name  = string
-    desired_count = number
-  })
+variable "ecs_cluster_name" {
+  type = string
+}
+
+variable "ecs_service_name" {
+  type = string
+}
+
+variable "ecs_desired_count" {
+  type = number
+  default = 2
 }
 
 variable "app_healthcheck" {
