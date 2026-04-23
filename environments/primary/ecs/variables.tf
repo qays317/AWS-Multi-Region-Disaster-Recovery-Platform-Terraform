@@ -4,7 +4,7 @@
 
 variable "ecr_image_uri" {
   type = string
-  default = ""
+  default = "174512274809.dkr.ecr.us-east-1.amazonaws.com/ecs-wordpress-app"
 }
 
 variable "ecs_cluster_name" {
