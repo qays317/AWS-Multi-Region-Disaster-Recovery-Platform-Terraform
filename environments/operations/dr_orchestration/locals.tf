@@ -27,6 +27,12 @@ locals {
       timeout = 60
       role_arn = data.terraform_remote_state.iam.outputs.lambda_failover_role_arn
       layer = true
+        vpc_config = {
+          subnet_ids = data.terraform_remote_state.dr_network.outputs.private_subnets_ids
+          security_group_ids = [
+            data.terraform_remote_state.dr_network.outputs.validate_db_writable_lambda_sg_id
+          ]
+        }
       environment = {
         DB_SECRET_ARN      = data.terraform_remote_state.dr_rds.outputs.wordpress_secret_arn
         DB_CONNECT_TIMEOUT = tostring(var.db_connect_timeout)
