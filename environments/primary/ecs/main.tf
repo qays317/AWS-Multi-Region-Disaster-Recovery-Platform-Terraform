@@ -62,7 +62,7 @@ module "ecs" {
     cloudfront_distribution_id = data.terraform_remote_state.cdn_dns.outputs.cloudfront_distribution_id
     cloudfront_distribution_domain = data.terraform_remote_state.cdn_dns.outputs.cloudfront_distribution_domain
     # Docker image
-    ecr_image_uri = var.ecr_image_uri
+    ecr_image_uri = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.primary_region}.amazonaws.com/ecs-wordpress-app"
     # ECS configuration
     ecs_cluster_name = var.ecs_cluster_name
     ecs_execution_role_arn = data.terraform_remote_state.iam.outputs.ecs_execution_role_arn
