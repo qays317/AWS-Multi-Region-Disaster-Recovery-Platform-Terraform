@@ -2,11 +2,6 @@
 //     ECS Variables
 //=============================================================================================================
 
-variable "ecr_image_uri" {
-  type = string
-  default = "174512274809.dkr.ecr.us-east-1.amazonaws.com/ecs-wordpress-app"
-}
-
 variable "ecs_cluster_name" {
   type = string
 }
