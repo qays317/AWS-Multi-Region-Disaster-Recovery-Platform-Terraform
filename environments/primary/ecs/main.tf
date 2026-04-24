@@ -47,6 +47,10 @@ data "terraform_remote_state" "cdn_dns" {
   }    
 }
 
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
+
 module "ecs" {
     source = "../../../modules/ecs"
     # infrastructure data
