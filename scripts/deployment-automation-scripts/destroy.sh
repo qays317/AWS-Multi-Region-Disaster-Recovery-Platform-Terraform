@@ -73,13 +73,18 @@ STACK_VARS["primary/failover_alarms"]+=" \
 destroy_stack "primary/failover_alarms"
 
 
-
 STACK_VARS["operations/dr_orchestration"]+=" \
   -var ecs_cluster_name=$ECS_CLUSTER_NAME \
   -var ecs_service_name=$ECS_SERVICE_NAME"
 
 destroy_stack "operations/dr_orchestration"
 
+
+# Read ECR Image URIs
+PRIMARY_ECR_IMAGE_URI=$(cat scripts/runtime/primary-ecr-image-uri)
+DR_ECR_IMAGE_URI=$(cat scripts/runtime/dr-ecr-image-uri)
+STACK_VARS["primary/ecs"]+=" -var ecr_image_uri=$PRIMARY_ECR_IMAGE_URI"
+STACK_VARS["dr/ecs"]+=" -var ecr_image_uri=$DR_ECR_IMAGE_URI"
 
 # Read ECS cluster, service names
 STACK_VARS["primary/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
@@ -128,6 +133,8 @@ if [[ -n "${RUNTIME_DIR:-}" && -d "${RUNTIME_DIR}" ]]; then
 else
   echo "Runtime directory does not exist — nothing to remove."
 fi
+
+# -------------------------------------------------------------------------------
 
 destroy_stack "global/cdn_dns"
 destroy_stack "dr/alb"
