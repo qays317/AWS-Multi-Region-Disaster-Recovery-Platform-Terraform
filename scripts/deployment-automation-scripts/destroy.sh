@@ -70,21 +70,21 @@ STACK_VARS["primary/failover_alarms"]+=" \
   -var ecs_cluster_name=$ECS_CLUSTER_NAME
   -var ecs_service_name=$ECS_SERVICE_NAME"
 
-#destroy_stack "primary/failover_alarms"
+destroy_stack "primary/failover_alarms"
 
 
 STACK_VARS["operations/dr_orchestration"]+=" \
   -var ecs_cluster_name=$ECS_CLUSTER_NAME \
   -var ecs_service_name=$ECS_SERVICE_NAME"
 
-#destroy_stack "operations/dr_orchestration"
+destroy_stack "operations/dr_orchestration"
 
 
 # Read ECR Image URIs
-#PRIMARY_ECR_IMAGE_URI=$(cat scripts/runtime/primary-ecr-image-uri)
-#DR_ECR_IMAGE_URI=$(cat scripts/runtime/dr-ecr-image-uri)
-#STACK_VARS["primary/ecs"]+=" -var ecr_image_uri=$PRIMARY_ECR_IMAGE_URI"
-#STACK_VARS["dr/ecs"]+=" -var ecr_image_uri=$DR_ECR_IMAGE_URI"
+PRIMARY_ECR_IMAGE_URI=$(cat scripts/runtime/primary-ecr-image-uri)
+DR_ECR_IMAGE_URI=$(cat scripts/runtime/dr-ecr-image-uri)
+STACK_VARS["primary/ecs"]+=" -var ecr_image_uri=$PRIMARY_ECR_IMAGE_URI"
+STACK_VARS["dr/ecs"]+=" -var ecr_image_uri=$DR_ECR_IMAGE_URI"
 
 # Read ECS cluster, service names
 STACK_VARS["primary/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
@@ -92,8 +92,8 @@ STACK_VARS["primary/ecs"]+=" -var ecs_service_name=$ECS_SERVICE_NAME"
 STACK_VARS["dr/ecs"]+=" -var ecs_cluster_name=$ECS_CLUSTER_NAME"
 STACK_VARS["dr/ecs"]+=" -var ecs_service_name=$ECS_SERVICE_NAME"
 
-#destroy_stack "dr/ecs"
-#destroy_stack "primary/ecs"
+destroy_stack "dr/ecs"
+destroy_stack "primary/ecs"
 
 # Destroy primary ECR repository
 echo "🗑️  Cleaning up primary ECR repository..."
@@ -136,10 +136,10 @@ fi
 
 # -------------------------------------------------------------------------------
 
-#destroy_stack "global/cdn_dns"
-#destroy_stack "dr/alb"
-#init_stack "primary/s3"
-#destroy_stack "dr/s3"
+destroy_stack "global/cdn_dns"
+destroy_stack "dr/alb"
+init_stack "primary/s3"
+destroy_stack "dr/s3"
 destroy_stack "dr/read_replica_rds"
 destroy_stack "primary/alb"
 destroy_stack "primary/s3"
