@@ -25,5 +25,7 @@ output "subnets" {                                              # Used in RDS su
 }
 
 output "private_route_table_id" {
-  value = aws_route_table.private.id
+  value = try({ for k, v in aws_route_table.main : k => v.id
+            if lookup(v.tags, "Name", "") == "*Pr*"}, null)
 }
+
