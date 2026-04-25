@@ -14,5 +14,5 @@ variable "vpc_endpoints" {
 }
 
 variable "private_route_table_id" {
-  type = string
+  type = list(string)
 }
