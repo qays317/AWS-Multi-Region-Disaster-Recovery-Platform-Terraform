@@ -23,3 +23,7 @@ output "public_subnets_ids" {                                   # used in ALB
 output "subnets" {                                              # Used in RDS subnet group
   value = { for k, v in aws_subnet.main : k => v.id }
 }
+
+output "private_route_table_id" {
+  value = aws_route_table.private.id
+}
