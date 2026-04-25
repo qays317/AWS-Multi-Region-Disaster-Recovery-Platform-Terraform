@@ -20,7 +20,7 @@ resource "aws_vpc_endpoint" "main" {
     security_group_ids = each.value.type == "Interface" ? [each.value.security_group_id] : null
     private_dns_enabled = each.value.type == "Interface" ? true : null
     # Gateway endpoints use route tables
-    route_table_ids = each.value.type == "Gateway" ? [var.private_route_table_id] : null
+    route_table_ids = each.value.type == "Gateway" ? var.private_route_table_id : null
     # Tag
     tags = { Name = "${each.key}-endpoint" }
 }
