@@ -22,6 +22,6 @@ module "endpoint" {
   vpc_id = module.network.vpc_id
   private_subnets_ids = module.network.private_subnets_ids
   vpc_endpoints = local.vpc_endpoints_config 
-  private_route_table_id = tostring(module.network.private_route_table_id)
+  private_route_table_id = module.network.private_route_table_id
 }
 
