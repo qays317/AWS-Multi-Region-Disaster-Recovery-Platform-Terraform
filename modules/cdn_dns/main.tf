@@ -85,7 +85,7 @@ resource "aws_cloudfront_distribution" "wordpress" {
     path_pattern = "/wp-content/uploads/*"
     target_origin_id = "S3-Group"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS", "POST"]
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT"]
     cached_methods = ["GET", "HEAD"]
     compress = true
     viewer_protocol_policy = "redirect-to-https"
