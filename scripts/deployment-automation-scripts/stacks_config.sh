@@ -84,7 +84,6 @@ STACK_VARS["dr/alb"]="\
 
 # GLOBAL CloudFront + DNS
 STACK_VARS["global/cdn_dns"]="\
-  -var-file=cdn_dns.tfvars \
   -var state_bucket_name=$TF_STATE_BUCKET_NAME \
   -var state_bucket_region=$TF_STATE_BUCKET_REGION \
   -var provided_ssl_certificate_arn=$CLOUDFRONT_SSL_CERTIFICATE_ARN \
