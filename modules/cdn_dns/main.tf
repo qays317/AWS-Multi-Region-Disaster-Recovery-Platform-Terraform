@@ -85,7 +85,7 @@ resource "aws_cloudfront_distribution" "wordpress" {
     path_pattern = "/wp-content/uploads/*"
     target_origin_id = "S3-Group"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT"]
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
     cached_methods = ["GET", "HEAD"]
     compress = true
     viewer_protocol_policy = "redirect-to-https"
@@ -108,7 +108,7 @@ resource "aws_cloudfront_distribution" "wordpress" {
   default_cache_behavior {
     target_origin_id = "ALB-Group"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods = ["GET", "HEAD"]
     compress = true
     viewer_protocol_policy = "redirect-to-https"
