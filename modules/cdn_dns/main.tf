@@ -189,6 +189,19 @@ resource "aws_route53_record" "main" {
   }
 }
 
+resource "aws_route53_health_check" "primary_admin_health" {
+  fqdn              = "admin.${var.primary_domain}"
+  type              = "HTTPS"
+  resource_path     = "/wp-login.php"
+  port              = 443
+  failure_threshold = 3
+  request_interval  = 30
+
+  tags = {
+    Name = "admin-primary-healthcheck"
+  }
+}
+
 resource "aws_route53_record" "admin_primary" {
   zone_id = var.hosted_zone_id
   name    = "admin.${var.primary_domain}"
