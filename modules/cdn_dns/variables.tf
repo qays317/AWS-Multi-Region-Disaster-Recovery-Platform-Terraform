@@ -36,7 +36,7 @@ variable "primary_domain" {
 
 # Generate both root and www domains
 locals {
-  domains = [var.primary_domain, "www.${var.primary_domain}", "admin.${var.primary_domain}"]
+  domains = [var.primary_domain, "www.${var.primary_domain}"]
 }
 
 variable "ssl_certificate_arn" {                 # Used by CloudFront for SSL Termination
