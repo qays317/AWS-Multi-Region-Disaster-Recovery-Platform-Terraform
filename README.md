@@ -228,7 +228,7 @@ Covers:
 
 * Multi-region ECS + ALB
 * Cross-region database replication
-* CloudFront origin failover with zero DNS changes or propagation delay
+* CloudFront origin failover avoids DNS record changes and reduces DNS-related failover delay
 
 ### 🌍 Global Content Delivery
 
@@ -246,7 +246,7 @@ Covers:
 
 * Modular structure
 * Remote state per environment
-* Zero manual configuration
+* Minimal manual setup after bootstrap; infrastructure provisioning is automated through Terraform and GitHub Actions.
 
 ---
 
@@ -269,7 +269,9 @@ Slower recovery time vs improved reliability and predictability
 ### Database Failover
 
 Decision:
-Manual promotion of cross-region read replica
+The failover is operator-triggered but automated after confirmation.
+An operator starts the Step Functions workflow, which promotes the DR replica,
+validates database writability, scales ECS in DR, and validates the application.
 
 Reason:
 Avoid potential data inconsistency and uncontrolled failover scenarios
@@ -377,7 +379,8 @@ Prevent cross-region blast radius and ensure true regional independence
 * CloudFront serves media via S3 origin group failover
 * ECS uses IAM role + VPC endpoint for secure access
 
-Media failover is 100% automatic - no operator intervention needed.
+Media read failover is automatic through CloudFront S3 origin groups.
+Media writes depend on the active ECS region and the configured WordPress/S3 bucket.
 
 ---
 
@@ -400,9 +403,22 @@ Media failover is 100% automatic - no operator intervention needed.
 
 # **Failover Strategy**
 
-Edge and media failover are automated through CloudFront origin groups, while stateful recovery remains controlled through ECS scale-up, RDS replica promotion, validation, and optional orchestration. This design intentionally prioritizes predictability and operational safety over aggressive auto-failover.
+DR is orchestrated using AWS Step Functions:
 
-## **1. Application Failover (Fully Automatic)**
+## Execution Flow
+  1. ReplicaFailoverHandler
+    * Promotes RDS read replica
+  2. ValidateDBWritable
+    * Confirms DB is writable
+  3. ServiceRecoveryHandler
+    * Scales ECS in DR
+  4. ValidateApplication
+    * Confirms app health via HTTP check
+
+## **1. Application Failover**
+
+Application read traffic can fail over automatically at the CloudFront origin-group layer.
+Full application recovery is operator-triggered and automated through Step Functions.
 
 CloudFront Origin Group:
 
@@ -517,36 +533,52 @@ aws-disaster-recovery/
 │   │   ├── oac/  
 │   │   ├── cdn_dns/
 │   ├── primary/
-│   │   ├── network_rds/
+│   │   ├── network/
+│   │   ├── rds/
 │   │   ├── s3/
 │   │   ├── alb/
-│   │   ├── ecs/     
+│   │   ├── ecs/
+│   │   └── failover-alarms/     
 │   └── dr/
-│       ├── network/
-│       ├── read_replica_rds/
-│       ├── s3/
-│       ├── alb/
-│       └── ecs/
+│   │   ├── network/
+│   │   ├── read_replica_rds/
+│   │   ├── s3/
+│   │   ├── alb/
+│   │   └── ecs/
+│   └── shared_values/
+│   │   ├── alb.tfvars/
+│   │   └── ecs.tfvars/
+│   └── operations/dr_orchestration/
 ├── modules/
 │   ├── acm/
 │   ├── alb/
 │   ├── cdn_dns/
 │   ├── ecs/
+│   ├── endpoint/
 │   ├── iam/
+│   ├── lambda/
 │   ├── rds/
 │   ├── s3/
 │   ├── sg/
-│   └── vpc
+│   └── vpc/
+├── lambdas/
+│   ├── primary-db-setup/
+│   ├── replica-failover-handler/
+│   ├── service-recovery-handler/
+│   ├── validate-application/
+│   ├── validate-db-writable/
+│   ├── pymysql-layer.zip
+├── stepfunctions/
+│   ├── dr-failover-orchestrator.asl.json/
 └── scripts/
     └── deployment-automation-scripts/
-    │   ├── config.sh
-    │   ├── deploy.sh
-    │   ├── destroy.sh
-    │   ├── pull-docker-hub-to-ecr.sh
-    │   └── stacks_config.sh
-    └── runtime/
-        ├── primary-ecr-image-uri
-        └── dr-ecr-image-uri   
+        ├── config.sh
+        ├── deploy.sh
+        ├── destroy.sh
+        ├── pull-docker-hub-to-ecr.sh
+        └── stacks_config.sh
+    
+
 ```
 This structure prevents dependency cycles and allows independent region deployments.
 
