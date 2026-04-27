@@ -49,7 +49,7 @@ This project demonstrates:
   - Making trade-offs between cost, complexity, and reliability
   - Implementing secure CI/CD with OIDC
   - Building production-ready infrastructure using Terraform
-  - Understanding ure scenarios and controlled recovery strategies
+  - Understanding failure scenarios and controlled recovery strategies
 
 ---
 
@@ -78,14 +78,14 @@ This project deploys a multi-region, production-grade WordPress platform using:
 ## Multi-Region Architecture (ASCII Diagram)
 
 ```text
-                                   ┌──────────────┐
-                                   │   Route 53   │
-                                   └───────┬──────┘
-                                           │
-                            ┌──────────────▼────────────────┐
-                            │      CloudFront (Global)      │
-                            │  Origin Groups (Auto over)│
-                            └───────────┬───────────┬───────┘
+                                     ┌──────────────┐
+                                     │   Route 53   │
+                                     └───────┬──────┘
+                                             │
+                            ┌────────────────▼───────────────────┐
+                            │        CloudFront (Global)         │
+                            │ Origin Groups (Automatic Failover) │
+                            └───────────┬───────────┬────────────┘
                                         │           │
                                       App         Media
                                  (Dynamic)      (Uploads)
