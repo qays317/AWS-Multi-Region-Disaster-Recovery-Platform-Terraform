@@ -6,14 +6,22 @@
 [![Destroy Multi-Region Infrastructure](https://github.com/QaysAlnajjad/aws-multi-region-wordpress-dr/actions/workflows/destroy.yml/badge.svg)](https://github.com/QaysAlnajjad/aws-multi-region-wordpress-dr/actions/workflows/destroy.yml)
 
 
-This project demonstrates a production-inspired AWS multi-region disaster recovery platform using a warm standby strategy. It combines infrastructure-as-code, controlled failover design, and clear operational trade-offs for ECS, RDS, S3, CloudFront, and Route 53.
-All infrastructure is 100% managed using **Terraform**, following AWS **Well-Architected best practices**.
+This project provisions a production-style WordPress infrastructure on AWS with multi-region disaster recovery (DR) using Terraform.
+
+It demonstrates:
+
+  * High availability (ALB + ECS)
+  * Cross-region failover (Route53 + RDS replica)
+  * Automated recovery (Step Functions + Lambda)
+  * CDN acceleration (CloudFront)
+  * Infrastructure as Code (Terraform)
 
 ---
 # 📘 Table of Contents
 
 - [What This Project Demonstrates](#what-this-project-demonstrates)
 - [Architecture Overview](#architecture-overview)
+- [Traffic Routing](#traffic-routing)
 - [Demo Videos](#demo-videos)
 - [Key Features](#key-features)
 - [Engineering Decisions](#engineering-decisions)
@@ -49,13 +57,22 @@ This project demonstrates:
 
 This project deploys a multi-region, production-grade WordPress platform using:
 
-* **Primary Region (Active):** `us-east-1`
-* **DR Region (Warm Standby):** `ca-central-1`
-* **Global routing:** One CloudFront distribution + Route 53
-* **Containers:** ECS Fargate (Primary active, DR scaled to 0)
-* **Database:** RDS MySQL with cross-region read-replica
-* **Media Storage:** S3 with cross-region replication
-* **Origin over:** CloudFront automatically s over to DR ALB & DR S3
+## Primary Region (us-east-1)
+  * ECS (WordPress containers)
+  * ALB (application traffic)
+  * RDS MySQL (primary database)
+  * S3 (media storage)
+## DR Region (ca-central-1)
+  * ECS (standby service)
+  * ALB (failover target)
+  * RDS Read Replica (promotable)
+  * S3 (replicated)
+## Global
+  * Route53 (DNS + failover)
+  * CloudFront (serves main domain)
+  * Step Functions (DR orchestration)
+  * Lambda (automation)
+
 --- 
 
 ## Multi-Region Architecture (ASCII Diagram)
@@ -102,6 +119,35 @@ This project deploys a multi-region, production-grade WordPress platform using:
            └───────────────────────────┘
                           
 ```
+
+---
+
+# **Traffic Routing**
+
+Public Traffic
+
+```text
+rqays.com / www.rqays.com
+        ↓
+   CloudFront
+        ↓
+   ALB (Primary → DR failover)
+```
+
+Admin Traffic (WordPress Dashboard)
+```text
+admin.rqays.com
+        ↓
+Route53 Failover
+        ↓
+Primary ALB → DR ALB
+```
+
+Admin is routed directly to ALB (NOT CloudFront) because:
+
+  * WordPress admin requires POST requests
+  * CloudFront origin groups do not support POST
+  * Ensures reliable login and writes
 
 ---
 
