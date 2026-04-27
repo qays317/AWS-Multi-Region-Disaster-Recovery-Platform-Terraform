@@ -835,8 +835,8 @@ This ensures a clean teardown with no orphaned resources.
 
 # **CloudWatch Monitoring and Alarms**
 
-This project implements centralized observability using Amazon CloudWatch.
-The automation layer consists of a one-time Lambda invocation used only during initial infrastructure provisioning.
+The automation layer includes a bootstrap Lambda for initial DB setup and a DR orchestration workflow using Step Functions and Lambda handlers.
+
 
 ✔ ECS Logging
 
@@ -867,7 +867,7 @@ To ensure service health and detect issues early, a CloudWatch alarm is configur
 
 The database-initialization Lambda function (wordpress-db-setup) includes full log coverage:
 * Log group:
-  * "/aws/lambda/wordpress-db-setup"
+  * "/aws/lambda/wordpress-infrastructure/primary-db-setup"
 * Log retention: 7 days
 * All Lambda execution output (including errors, DB setup output, Secrets Manager interactions) is logged
 * Logs assist in debugging database bootstrap, credential provisioning, and RDS post-creation automation
@@ -927,6 +927,8 @@ Total DR Region:
 Total Multi-Region Cost
 Primary ($187–$305) + DR ($145–$196)
 👉 Estimated Total: $332–$501 per month
+
+These are rough estimates and vary by AWS region, traffic volume, storage size, and instance classes.
 
 ---
 
