@@ -122,7 +122,7 @@ Covers:
 
 ### ▶️ **Demo 2 (4 min)**  
 **AWS Multi-Region WordPress DR – Primary Region Validation**  
-https://youtu.be/DITJBaNBQeQ
+https://youtu.be/llBW524p_mY
 
 Covers:
 - WordPress frontend & admin access
@@ -134,7 +134,7 @@ Covers:
 
 ### ▶️ **Demo 3 (10 min)**  
 **AWS Multi-Region WordPress DR – Failover Simulation**  
-https://youtu.be/7cX2Dw5RYVM
+https://youtu.be/taxhBePimCA
 
 Covers:
 - Primary region failure simulation
