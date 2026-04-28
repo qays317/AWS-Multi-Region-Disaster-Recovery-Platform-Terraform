@@ -358,7 +358,7 @@ Prevent cross-region blast radius and ensure true regional independence
   2. **S3 Primary → S3 DR**
 * Default: application traffic
 * Ordered: WordPress media uploads
-* Full automatic failover
+* Automatic traffic failover at the CDN layer
 * TLS enabled using ACM
 
 ---
@@ -367,7 +367,7 @@ Prevent cross-region blast radius and ensure true regional independence
 
 * Primary RDS
 * DR region read-replica
-* Manual promotion during primary region failure
+* Replica promotion is triggered by the DR orchestration workflow (Step Functions)
 
 ---
 
@@ -426,6 +426,8 @@ CloudFront Origin Group:
 Primary ALB → DR ALB
 ```
 
+Failover is based on HTTP status codes (5xx) and origin connectivity, not application-level health.
+
 Triggers failover on:
 
 * error 5xx
@@ -473,10 +475,22 @@ Write failover is controlled at ECS task-level.
 When the primary region becomes unavailable:
 
 1. **CloudFront automatically fails over** to the DR ALB.
-2. The DR ECS service is **manually scaled** (or via automation) from 0 to 2 tasks.
+2. The DR ECS service is scaled by the Step Functions recovery workflow from 0 to 2 tasks.
 3. DR tasks start, register with the DR target group, and immediately begin serving traffic.
 
 This architecture follows AWS Warm Standby DR pattern — a cost-efficient model where the secondary region remains ready but scaled down until failover.
+
+---
+
+## DR Execution (Operator Action)
+
+To initiate failover:
+
+1. Trigger Step Functions execution
+2. Monitor execution logs
+3. Validate application endpoint
+
+This ensures controlled, auditable disaster recovery.
 
 ---
 
@@ -488,8 +502,9 @@ This section describes how the system behaves under real failure conditions.
 
 - CloudFront automatically routes traffic to DR ALB
 - S3 failover ensures media availability
-- ECS service in DR must be scaled up manually
-- RDS read replica must be promoted
+- ECS service in DR is scaled by the recovery workflow
+- RDS replica is promoted through Step Functions
+
 
 Result:
 ✔ Application remains available with minimal downtime
@@ -912,7 +927,7 @@ DR Region (Warm Standby) — Estimated Monthly Cost
 | Component       | Service                              | Cost Behavior           | Approx Monthly Cost       |
 | --------------- |--------------------------------------|-------------------------|---------------------------|
 | Compute         | ECS Fargate tasks                    | Scaled to 0 (normal)    | $0                        |
-| Database        | RDS cross-region read replica        | reqiured                | $120–$150                 |  
+| Database        | RDS cross-region read replica        | required                | $120–$150                 |  
 | Storage         | S3 replication target                | Minimal                 | $3-$10                    |
 | Networking      | ALB + VPC Endpoints (No NAT Gateway) | Low                     | $18-$30                   |
 | Traffic         | CloudFront distribution              | Shared                  | $0                        |
@@ -937,7 +952,7 @@ These are rough estimates and vary by AWS region, traffic volume, storage size, 
 These limitations are intentional and reflect real-world engineering trade-offs rather than incomplete implementation.
 This project implements a realistic multi-region DR (Disaster Recovery) architecture using a Warm Standby strategy. While effective and cost-efficient, it includes several intentional trade-offs and limitations that are important to understand.
 
-### 1. Manual RDS Failover (Replica Promotion)
+### 1. Operator-Triggered RDS Failover
 
 * The cross-region RDS replica does not automatically become primary.
 * In a region-wide failure, an operator must manually promote the read replica in the DR region.
@@ -970,10 +985,10 @@ This project implements a realistic multi-region DR (Disaster Recovery) architec
   Trade-off: End-to-end DB health checks require custom application endpoints or deeper monitoring.
   For simplicity, this solution checks only at the HTTP level.
 
-### 5. Lambda Automation Runs Once (Bootstrap Only)
+### 5. Bootstrap Lambda vs DR Automation
 
 * The DB setup Lambda runs only during initial deployment.
-* Schema migrations or future DB updates must be handled manually or using a CI/CD process.
+* DR recovery is handled by Step Functions invoking multiple Lambda functions.
 
   Trade-off:
   Automating migrations adds complexity (Liquibase, Flyway, custom pipelines), so bootstrap-only logic keeps the project simple.
