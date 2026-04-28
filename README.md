@@ -30,6 +30,7 @@ It demonstrates:
 - [Infrastructure Components](#infrastructure-components)
 - [Failover Strategy](#failover-strategy)
 - [Failure Scenarios & Recovery](#failure-scenarios--recovery)
+- [Observability](#observability)
 - [Terraform Structure](#terraform-structure)
 - [CI/CD Strategy](#cicd-strategy)
 - [Reviewer Setup (How to Deploy This Project in Your AWS Account)](#reviewer-setup-how-to-deploy-this-project-in-your-aws-account)
@@ -418,7 +419,7 @@ DR is orchestrated using AWS Step Functions:
 ## **1. Application Failover**
 
 Application read traffic can fail over automatically at the CloudFront origin-group layer.
-Full application recovery is operator-triggered and automated through Step Functions.
+Full application recovery is initiated by an operator and executed automatically via Step Functions
 
 CloudFront Origin Group:
 
@@ -452,7 +453,7 @@ Write failover is controlled at ECS task-level.
 
 ## **3. Database Failover (RDS → DR Region)**
 
-### Default (manual):
+### Default (operator-triggered workflow)::
 
 * Amazon RDS MySQL (Primary Region)
 * Cross-Region Read Replica (DR Region)
@@ -490,7 +491,7 @@ To initiate failover:
 2. Monitor execution logs
 3. Validate application endpoint
 
-This ensures controlled, auditable disaster recovery.
+controlled, auditable, and repeatable disaster recovery
 
 ---
 
@@ -500,7 +501,7 @@ This section describes how the system behaves under real failure conditions.
 
 ### 🌍 Full Region Failure (Primary Down)
 
-- CloudFront automatically routes traffic to DR ALB
+- CloudFront automatically routes traffic to DR ALB. This happens without DNS propagation delays
 - S3 failover ensures media availability
 - ECS service in DR is scaled by the recovery workflow
 - RDS replica is promoted through Step Functions
@@ -533,6 +534,13 @@ Result:
 ---
 
 This reflects a controlled disaster recovery model where critical stateful operations remain under operator control.
+
+---
+
+# **Observability**
+
+* CloudWatch alarms detect ECS and ALB degradation
+* Failover workflow can be triggered based on operational alerts or manual decision
 
 ---
 
@@ -955,7 +963,7 @@ This project implements a realistic multi-region DR (Disaster Recovery) architec
 ### 1. Operator-Triggered RDS Failover
 
 * The cross-region RDS replica does not automatically become primary.
-* In a region-wide failure, an operator must manually promote the read replica in the DR region.
+* The failover is initiated by an operator but executed automatically via Step Functions
 * This introduces a small delay (RTO) until the database becomes writable again.
 
   Trade-off:
